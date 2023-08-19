@@ -4,7 +4,7 @@ import axios from "axios";
 const getProductdet = async (id)=>{
 const {data}  = await axios.get(`${process.env.URL}/api/products/${id}`);
 return data?.product;
-console.log(data)
+
 }
 
 const ProductDetailsPage = async({params}) => {
