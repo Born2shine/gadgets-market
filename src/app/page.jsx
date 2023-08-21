@@ -5,7 +5,11 @@ import queryString from "query-string";
 const getAllProducts = async(searchParams)=>{
 const urlParams= {
     keyword:searchParams.keyword,
-    page: searchParams.page
+    page: searchParams.page,
+    category: searchParams.category,
+    "ratings[gte]": searchParams.ratings,
+    "price[lte]": searchParams.min,
+    "price[gte]": searchParams.max,
 }
 
 

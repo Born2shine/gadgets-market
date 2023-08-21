@@ -9,7 +9,7 @@ import ProductItem from "./productItem";
 import CustomPagination from "../layout/customPagination";
 
 const ListProducts = ({data}) => { 
-  console.log(data)
+ 
   return (
     <>
      

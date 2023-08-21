@@ -36,7 +36,7 @@ const ProductItem = ({product}) => {
                         <div className="ratings">
                           <div className="my-1">
                             <StarRatings
-                              rating={5}
+                              rating={product?.ratings}
                               starRatedColor="#ffb829"
                               numberOfStars={5}
                               starDimension="18px"
@@ -46,7 +46,7 @@ const ProductItem = ({product}) => {
                           </div>
                         </div>
                         <b className="text-gray-300">•</b>
-                        <span className="ml-1 text-yellow-500">5</span>
+                        <span className="ml-1 text-yellow-500">{product?.ratings}</span>
                       </div>
                       <p className="text-gray-500 mb-2">
                         {product?.description.substring(0, 150)}...<Link href={`/product/${product?._id}`}className="px-2 inline-block text-white bg-blue-400 border border-transparent rounded-md hover:bg-blue-500 cursor-pointer">
