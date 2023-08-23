@@ -1,37 +1,34 @@
 'use client'
 import Link from 'next/link'
-import { useState, useEffect, useContext } from 'react';
+import { useState } from 'react';
 import AuthContext from "@/context/authContext";
 import { toast } from "react-toastify";
 import {signIn} from 'next-auth/react'
-import{useRouter} from 'next/navigation'
+import{useRouter, useSearchParams} from 'next/navigation'
+import {parseCallbackUrl} from "@/helpers/helpers"
 
 
 const Login = () => {
-const router = useRouter()
-  // const {error, clearError} =  useContext(AuthContext)
+const router = useRouter();
 
+const params = useSearchParams();
+
+const callBackUrl = params.get('callbackUrl');
 
   const[email, setEmail] = useState('')
   const[password, setPassword] = useState('')
 
-  // useEffect(()=>{
-  //   if(error){
-  //     toast.error(error)
-  //     clearError()
-  //   }
-  // }, [error])
-
+  
   const submitHandler = async(e)=>{
       e.preventDefault();
 
     const data= await signIn('credentials',{
       email,
       password,
-      redirect: false
+      callbackUrl:callBackUrl ? parseCallbackUrl(callBackUrl): "/"
     })
 
-    console.log(data) 
+    
    
     if (data?.error){
       toast.error(data?.error)
@@ -40,11 +37,7 @@ const router = useRouter()
     if(data?.ok){
       toast.success('LOGIN SUCCESFUL!')
       router.push('/')
-    }
-
-  
-
-      // registerUser({email, password})
+    }      
 
   }
 
@@ -53,7 +46,7 @@ const router = useRouter()
       style={{ maxWidth: "480px" }}
       className="mt-10 mb-20 p-4 md:p-7 mx-auto rounded bg-white shadow-lg"
     >
-      <form  onClick={submitHandler}>
+      <form >
         <h2 className="mb-5 text-2xl font-semibold">Login</h2>
 
         <div className="mb-4">

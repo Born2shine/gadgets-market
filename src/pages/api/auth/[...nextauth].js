@@ -33,6 +33,19 @@ export default async function auth(req, res) {
         },
       }),
     ],
+    callbacks: {
+      jwt: async ({ token, user }) => {
+        user && (token.user = user);
+
+        return token;
+      },
+
+      session: async ({ session, token }) => {
+        session.user = token.user;
+
+        return session;
+      },
+    },
     pages: {
       signIn: "/login",
     },
