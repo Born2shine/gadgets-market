@@ -2,6 +2,7 @@
 
 import { createContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -23,7 +24,7 @@ export const AuthProvider = ({ children }) => {
           password,
         }
       );
-
+      console.log(data?.user);
       if (data?.user) {
         toast.success("SignUp Successful!!");
         setTimeout(() => {
@@ -31,7 +32,7 @@ export const AuthProvider = ({ children }) => {
         }, 1500);
       }
     } catch (err) {
-      console.log(err?.response);
+      console.log(err?.response?.data?.message);
 
       setError(err?.response?.data?.message);
     }

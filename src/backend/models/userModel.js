@@ -50,11 +50,9 @@ userSchema.pre("save", async function (next) {
     return next();
   }
 
-  this.password = await bcrypt.hash(this.password, 12);
+  this.password = await bcrypt.hash(this.password, 10);
 
   this.passwordChangeAt = Date.now() - 2000;
-
-  next();
 });
 
 export default mongoose.models.User || mongoose.model("User", userSchema);

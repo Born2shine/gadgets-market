@@ -1,13 +1,59 @@
-import React from "react";
-import { Link } from "react-router-dom";
+'use client'
+import Link from 'next/link'
+import { useState, useEffect, useContext } from 'react';
+import AuthContext from "@/context/authContext";
+import { toast } from "react-toastify";
+import {signIn} from 'next-auth/react'
+import{useRouter} from 'next/navigation'
+
 
 const Login = () => {
+const router = useRouter()
+  // const {error, clearError} =  useContext(AuthContext)
+
+
+  const[email, setEmail] = useState('')
+  const[password, setPassword] = useState('')
+
+  // useEffect(()=>{
+  //   if(error){
+  //     toast.error(error)
+  //     clearError()
+  //   }
+  // }, [error])
+
+  const submitHandler = async(e)=>{
+      e.preventDefault();
+
+    const data= await signIn('credentials',{
+      email,
+      password,
+      redirect: false
+    })
+
+    console.log(data) 
+   
+    if (data?.error){
+      toast.error(data?.error)
+    }
+
+    if(data?.ok){
+      toast.success('LOGIN SUCCESFUL!')
+      router.push('/')
+    }
+
+  
+
+      // registerUser({email, password})
+
+  }
+
   return (
     <div
       style={{ maxWidth: "480px" }}
       className="mt-10 mb-20 p-4 md:p-7 mx-auto rounded bg-white shadow-lg"
     >
-      <form>
+      <form  onClick={submitHandler}>
         <h2 className="mb-5 text-2xl font-semibold">Login</h2>
 
         <div className="mb-4">
@@ -15,6 +61,8 @@ const Login = () => {
           <input
             className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
             type="text"
+            value={email}
+            onChange={(e)=>setEmail(e.target.value)}
             placeholder="Type your email"
             required
           />
@@ -25,6 +73,8 @@ const Login = () => {
           <input
             className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
             type="password"
+            value={password}
+            onChange={(e)=>setPassword(e.target.value)}
             placeholder="Type your password"
             minLength={6}
             required
@@ -33,7 +83,7 @@ const Login = () => {
 
         <button
           type="submit"
-          className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
+          className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"  onClick={submitHandler}
         >
           Login
         </button>
@@ -41,8 +91,8 @@ const Login = () => {
         <hr className="mt-4" />
 
         <p className="text-center mt-5">
-          Don't have an account?{" "}
-          <Link to="/register" className="text-blue-500">
+          Dont have an account?{" "}
+          <Link href="/register" className="text-blue-500">
             Register
           </Link>
         </p>
