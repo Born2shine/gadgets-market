@@ -9,32 +9,37 @@ import {parseCallbackUrl} from "@/helpers/helpers"
 
 
 const Login = () => {
+const[email, setEmail] = useState('')
+const[password, setPassword] = useState('')
+
 const router = useRouter();
 
 const params = useSearchParams();
 
 const callBackUrl = params.get('callbackUrl');
 
-  const[email, setEmail] = useState('')
-  const[password, setPassword] = useState('')
+
 
   
   const submitHandler = async(e)=>{
       e.preventDefault();
 
-    const data= await signIn('credentials',{
+    const data= await signIn('credentials', {
       email,
       password,
-      callbackUrl:callBackUrl ? parseCallbackUrl(callBackUrl): "/"
+      callbackUrl:  callBackUrl ? parseCallbackUrl(callBackUrl): "/"
     })
 
     
+    
    
     if (data?.error){
+      console.log(data?.error)
       toast.error(data?.error)
     }
 
     if(data?.ok){
+      console.log(data)
       toast.success('LOGIN SUCCESFUL!')
       router.push('/')
     }      
@@ -54,10 +59,10 @@ const callBackUrl = params.get('callbackUrl');
           <input
             className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
             type="text"
-            value={email}
-            onChange={(e)=>setEmail(e.target.value)}
+            value={email}           
             placeholder="Type your email"
             required
+            onChange={(e)=>setEmail(e.target.value)}
           />
         </div>
 
@@ -66,11 +71,11 @@ const callBackUrl = params.get('callbackUrl');
           <input
             className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
             type="password"
-            value={password}
-            onChange={(e)=>setPassword(e.target.value)}
+            value={password}         
             placeholder="Type your password"
             minLength={6}
             required
+            onChange={(e)=>setPassword(e.target.value)}
           />
         </div>
 

@@ -17,13 +17,17 @@ export default async function auth(req, res) {
 
           const { email, password } = credentials;
 
+          if (!email || !password) {
+            throw new Error("Please input your email or Password");
+          }
+
           const user = await User.findOne({ email }).select("+password");
 
           if (!user) {
             throw new Error("invalid email or password");
           }
 
-          const isPasswordMatch = bcrypt.compare(password, user.password);
+          const isPasswordMatch = await bcrypt.compare(password, user.password);
 
           if (!isPasswordMatch) {
             throw new Error("invalid email or password");
