@@ -5,6 +5,8 @@ import {
   getAllProducts,
   newProduct,
 } from "@/backend/controllers/productController";
+import onError from "@/backend/middlewares/errors";
+import { isLoggedIN } from "@/backend/middlewares/auth";
 
 const router = createRouter();
 
@@ -12,6 +14,6 @@ dbConnect();
 
 router.post(newProduct);
 // router.post(createAllProducts);
-router.get(getAllProducts);
+router.use(isLoggedIN).get(getAllProducts);
 
-export default router.handler();
+export default router.handler({ onError });

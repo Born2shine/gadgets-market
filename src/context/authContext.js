@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import axios from "axios";
@@ -15,27 +15,28 @@ export const AuthProvider = ({ children }) => {
   const router = useRouter();
 
   const registerUser = async ({ name, email, password }) => {
-    try {
-      const { data } = await axios.post(
-        `${process.env.URL}/api/auth/register`,
-        {
-          name,
-          email,
-          password,
-        }
-      );
-      console.log(data?.user);
-      if (data?.user) {
-        toast.success("SignUp Successful!!");
-        setTimeout(() => {
-          router.push("/");
-        }, 1500);
-      }
-    } catch (err) {
-      console.log(err?.response?.data?.message);
-
-      setError(err?.response?.data?.message);
+    const { data } = await axios.post(`${process.env.URL}/api/auth/register`, {
+      name,
+      email,
+      password,
+    });
+    if (data) {
+      router.push("/");
+    } else {
+      toast.error("ERROR!!");
     }
+
+    // if (data?.user) {
+    //   toast.success("SignUp Successful!!");
+    //   router.push("/");
+    //   // setTimeout(() => {
+
+    //   // }, 1500);
+    // } else if (!data?.user) {
+    //   console.log(response?.data?.message);
+    //   setError(response?.data?.message);
+    //   toast.error("failed");
+    // }
   };
   const addNewAddress = async (newAddress) => {
     console.log(newAddress);
@@ -55,6 +56,7 @@ export const AuthProvider = ({ children }) => {
       setError(err?.response?.data?.message);
     }
   };
+
   const clearError = () => {
     setError(null);
   };

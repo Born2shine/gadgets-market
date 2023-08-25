@@ -2,7 +2,7 @@
 import React from "react";
 import Link from 'next/link'
 
-const UserAddresses = () => {
+const UserAddresses = ({address}) => {
   return (
     <Link href={`/address/`}>
       <div className="mb-5 gap-4">
@@ -14,9 +14,9 @@ const UserAddresses = () => {
           </div>
           <figcaption className="text-gray-600">
             <p>
-              123 street <br /> Orlando, FL, 34456, US
+              {address.street} <br /> {address.city}, {address.state}, {address.zipCode}, {address.country}
               <br />
-              Phone no: 1234568746
+              Phone no: {address.phoneNo}
             </p>
           </figcaption>
         </figure>

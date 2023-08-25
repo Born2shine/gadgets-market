@@ -1,6 +1,8 @@
 import NewAddress from "@/components/user/NewAddress";
 
 const newAddressPage = () => {
+    
+    
     return ( <NewAddress/> );
 }
  

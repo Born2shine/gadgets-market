@@ -3,12 +3,13 @@
 
 import Link from 'next/link'
 import UserAddresses from "../user/UserAddresses";
-import Sidebar from "../layout/Sidebar";
 import { useContext } from 'react';
 import AuthContext from '@/context/authContext';
 
-const Profile = () => {
+const Profile = ({addresses}) => {
 const {user} = useContext(AuthContext)
+
+
   return (
     <>
       
@@ -30,8 +31,11 @@ const {user} = useContext(AuthContext)
               </figure>
 
               <hr className="my-4" />
-
-              <UserAddresses />
+              {addresses.map((address)=>(
+                  <UserAddresses key={address._id} address={address} />
+              )
+              )}
+              
 
               <Link href="/address/new">
                 <button className="px-4 py-2 inline-block text-blue-600 border border-gray-300 rounded-md hover:bg-gray-100">
