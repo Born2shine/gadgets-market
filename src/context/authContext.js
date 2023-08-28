@@ -2,6 +2,7 @@
 
 import { createContext, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useCookies, Cookies } from "react-cookie";
 
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -13,6 +14,16 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   const router = useRouter();
+  let cookie;
+  if (typeof window !== "undefined") {
+    cookie = document.cookie;
+    // .split(";")
+    // .filter((row) => row.startsWith("next-auth.session-token="));
+  }
+
+  console.log(cookie);
+
+  // Cookies.get("")
 
   const registerUser = async ({ name, email, password }) => {
     const { data } = await axios.post(`${process.env.URL}/api/auth/register`, {
@@ -38,14 +49,15 @@ export const AuthProvider = ({ children }) => {
     //   toast.error("failed");
     // }
   };
-  const addNewAddress = async (newAddress) => {
-    console.log(newAddress);
+  const addNewAddress = async (newAddress, cookiesToken) => {
     try {
       const { data } = await axios.post(`${process.env.URL}/api/address`, {
         newAddress,
+        headers: {
+          Cookie: `next-auth.session-token=${cookiesToken?.value}`,
+        },
+        withCredentials: true,
       });
-
-      console.log(data);
 
       if (data) {
         router.push("/me");

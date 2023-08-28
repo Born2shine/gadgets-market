@@ -1,16 +1,16 @@
 import Address from "../models/addressModel";
 
 export const newAddress = async (req, res) => {
-  console.log(req.body, "--------------------------");
   const { newAddress } = req.body;
-  console.log(newAddress, "--------------------------");
+  newAddress.user = req.user._id;
+
   const address = await Address.create(newAddress);
 
   res.status(201).json({ address });
 };
 
 export const getAllAddress = async (req, res) => {
-  const addresses = await Address.find();
+  const addresses = await Address.find({ user: req.user._id });
 
   res.status(200).json({ addresses });
 };

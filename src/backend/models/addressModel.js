@@ -17,6 +17,11 @@ const addressSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
+    required: true,
+  },
   zipCode: {
     type: String,
     required: true,

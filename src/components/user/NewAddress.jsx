@@ -7,7 +7,7 @@ import AuthContext from "@/context/authContext";
 import Sidebar from "../layout/Sidebar";
 import { useState, useContext } from "react";
 
-const NewAddress = () => {
+const NewAddress = ({cookiesToken}) => {
   const {addNewAddress} = useContext(AuthContext)
   const countriesList =Object.values(countries)
   
@@ -24,7 +24,7 @@ const NewAddress = () => {
   const newAddress = {
     street, zipCode, country, state, city, phoneNo
   }
-  addNewAddress(newAddress)
+  addNewAddress(newAddress, cookiesToken)
   // console.log(newAddress)
   }
 

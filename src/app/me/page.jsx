@@ -5,13 +5,13 @@ import {cookies} from 'next/headers'
 
 const getAllAddress= async()=>{
 
-    const nextCookies = cookies()
+    const nextCookies = cookies();
 
-    const nextAuthSessionToken = nextCookies('next-auth.session-token')
+    const nextAuthSessionToken = nextCookies.get('next-auth.session-token')
 
     const { data } = await axios(`${process.env.URL}/api/address`, {
         headers: {
-            cookies: `next-auth.session-token=${nextAuthSessionToken?.value}`
+            Cookie: `next-auth.session-token=${nextAuthSessionToken?.value}`
         }
     });
 
