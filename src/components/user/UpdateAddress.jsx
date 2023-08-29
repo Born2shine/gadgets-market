@@ -5,36 +5,46 @@
 import { countries} from "countries-list";
 import AuthContext from "@/context/authContext";
 import Sidebar from "../layout/Sidebar";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
+import { updateAddress } from "@/backend/controllers/addressController";
+import { useEffect } from "react";
 import { toast } from "react-toastify";
 
-const NewAddress = ({cookiesToken}) => {
-  const {addNewAddress} = useContext(AuthContext)
+const UpdateAddress = ({id, address}) => {
+  const {updatedAddress, error, clearErrors, updated, setUpdated} = useContext(AuthContext)
   const countriesList =Object.values(countries)
   
 
-  const [street, setStreet] = useState('')
-  const [zipCode, setZipCode] = useState('')
-  const [country, setCountry] = useState('')
-  const [state, setState] = useState('')
-  const [city, setCity] = useState('')
-  const [phoneNo, setPhoneNo] = useState('')
+  const [street, setStreet] = useState(address.street)
+  const [zipCode, setZipCode] = useState(address.zipCode)
+  const [country, setCountry] = useState(address.country)
+  const [state, setState] = useState(address.state)
+  const [city, setCity] = useState(address.city)
+  const [phoneNo, setPhoneNo] = useState(address.phoneNo)
 
   const submitHandler=(e)=>{
     e.preventDefault() 
-  const newAddress = {
+  const updatedAddress = {
     street, zipCode, country, state, city, phoneNo
   }
-  addNewAddress(newAddress, cookiesToken)
-  // console.log(newAddress)
-  }
+  updateAddress(id, updatedAddress)
+ 
+  } 
+
 
   useEffect(()=>{
+    if(updated){
+        toast.success("Address updated");
+        setUpdated(false)       
+        
+    }
+
     if(error){
         toast.error(error)
         clearErrors()
     }
-  },[error])
+  },[error, updated])
+ 
 
   return (
     <>
@@ -54,7 +64,7 @@ const NewAddress = ({cookiesToken}) => {
               >
                 <form onSubmit={submitHandler}>
                   <h2 className="mb-5 text-2xl font-semibold">
-                    Add new Address
+                   Update Address
                   </h2>
 
                   <div className="mb-4 md:col-span-2">
@@ -134,12 +144,12 @@ const NewAddress = ({cookiesToken}) => {
                     type="submit"
                     className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
                   >
-                    Add
+                            Update
                   </button>
                   <button                  
                     className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-red-400 border border-transparent rounded-md hover:bg-red-600"
                   >
-                    Add
+                    Delete
                   </button>
 
                   </div>
@@ -154,4 +164,4 @@ const NewAddress = ({cookiesToken}) => {
   );
 };
 
-export default NewAddress;
+export default UpdateAddress;

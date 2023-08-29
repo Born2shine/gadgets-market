@@ -1,14 +1,8 @@
 // import { NextResponse } from "next/server";
 // import next from "next/types";
 import Product from "../models/product";
-import fs from "fs";
+
 import ApiFilters from "../utils/apiFilters";
-
-// const product = JSON.parse(
-//   fs.readFileSync("../../data/products.json", "utf-8")
-// );
-
-// console.log(tour);
 
 // export const createAllProducts = async (req, res, next) => {
 //   const products = await Product.create(product);
