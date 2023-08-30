@@ -6,13 +6,12 @@ import { countries} from "countries-list";
 import AuthContext from "@/context/authContext";
 import Sidebar from "../layout/Sidebar";
 import { useState, useContext } from "react";
-import { updateAddress } from "@/backend/controllers/addressController";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 
 const UpdateAddress = ({id, address}) => {
-    
-  const {updatedAddress, error, clearErrors, updated, setUpdated, deleteAddress} = useContext(AuthContext)
+
+  const {updateAddress, error, clearErrors, updated, setUpdated, deleteAddress} = useContext(AuthContext)
 
   const countriesList =Object.values(countries)
   
@@ -29,6 +28,7 @@ const UpdateAddress = ({id, address}) => {
   const updatedAddress = {
     street, zipCode, country, state, city, phoneNo
   }
+  console.log(updateAddress)
   updateAddress(id, updatedAddress)
  
   };
