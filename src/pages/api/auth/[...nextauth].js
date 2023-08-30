@@ -6,14 +6,14 @@ import bcrypt from "bcryptjs";
 import dbConnect from "@/backend/config/dbconfig";
 
 export default async function auth(req, res) {
-  if (req.query.nextauth.includes("callback") && req.method === "POST") {
-    console.log(
-      "Handling callback request from my Identity Provider",
-      req.body
-    );
-  }
+  //   if (req.query.nextauth.includes("callback") && req.method === "POST") {
+  //     console.log(
+  //       "Handling callback request from my Identity Provider",
+  //       req.body
+  //     );
+  //   }
 
-  const someCookie = req.cookies["next-auth.session-token"];
+  // const someCookie = req.cookies["next-auth.session-token"];
 
   return await NextAuth(req, res, {
     session: {
@@ -55,7 +55,7 @@ export default async function auth(req, res) {
 
       session: async ({ session, token }) => {
         session.user = token.user;
-        session.someCookie = someCookie;
+        // session.someCookie = someCookie;
 
         return session;
       },

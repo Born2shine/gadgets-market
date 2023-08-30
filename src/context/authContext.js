@@ -2,11 +2,9 @@
 
 import { createContext, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useCookies, Cookies } from "react-cookie";
 
 import axios from "axios";
 import { toast } from "react-toastify";
-import Id from "@/pages/api/products/[id]";
 
 const AuthContext = createContext();
 
@@ -15,16 +13,6 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [updated, setUpdated] = useState(false);
   const router = useRouter();
-  let cookie;
-  if (typeof window !== "undefined") {
-    cookie = document.cookie;
-    // .split(";")
-    // .filter((row) => row.startsWith("next-auth.session-token="));
-  }
-
-  console.log(cookie);
-
-  // Cookies.get("")
 
   const registerUser = async ({ name, email, password }) => {
     const { data } = await axios.post(`${process.env.URL}/api/auth/register`, {
@@ -72,7 +60,7 @@ export const AuthProvider = ({ children }) => {
 
   const updateAddress = async (id, updatedAddress) => {
     try {
-      const { data } = await axios.put(`${process.env.URL}/api/address/${Id}`, {
+      const { data } = await axios.put(`${process.env.URL}/api/address/${id}`, {
         updatedAddress,
       });
 
@@ -90,6 +78,23 @@ export const AuthProvider = ({ children }) => {
   const clearError = () => {
     setError(null);
   };
+
+  const deleteAddress = async (id) => {
+    try {
+      const { data } = await axios.delete(
+        `${process.env.URL}/api/address/${id}`
+      );
+
+      if (data) {
+        router.push(`/me`);
+      }
+    } catch (err) {
+      console.log(err?.response?.data?.message);
+
+      setError(err?.response?.data?.message);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -102,6 +107,7 @@ export const AuthProvider = ({ children }) => {
         addNewAddress,
         updateAddress,
         setUpdated,
+        deleteAddress,
       }}
     >
       {children}

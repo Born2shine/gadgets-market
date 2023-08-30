@@ -9,7 +9,7 @@ import { useState, useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 
 const NewAddress = ({cookiesToken}) => {
-  const {addNewAddress} = useContext(AuthContext)
+  const {addNewAddress, error} = useContext(AuthContext)
   const countriesList =Object.values(countries)
   
 
@@ -128,21 +128,13 @@ const NewAddress = ({cookiesToken}) => {
                       ))}
                     </select>
                   </div>
-
-                  <div className="grid md:grid-cols-cols-2 gap-x-3">
                   <button
                     type="submit"
                     className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
                   >
                     Add
                   </button>
-                  <button                  
-                    className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-red-400 border border-transparent rounded-md hover:bg-red-600"
-                  >
-                    Add
-                  </button>
-
-                  </div>
+                 
                 </form>
               </div>
               </main>

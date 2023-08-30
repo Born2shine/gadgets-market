@@ -11,7 +11,9 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 
 const UpdateAddress = ({id, address}) => {
-  const {updatedAddress, error, clearErrors, updated, setUpdated} = useContext(AuthContext)
+    
+  const {updatedAddress, error, clearErrors, updated, setUpdated, deleteAddress} = useContext(AuthContext)
+
   const countriesList =Object.values(countries)
   
 
@@ -29,7 +31,12 @@ const UpdateAddress = ({id, address}) => {
   }
   updateAddress(id, updatedAddress)
  
-  } 
+  };
+  
+                   
+  const deleteAddressHandler =()=>{
+    deleteAddress(id)
+  }
 
 
   useEffect(()=>{
@@ -147,7 +154,7 @@ const UpdateAddress = ({id, address}) => {
                             Update
                   </button>
                   <button                  
-                    className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-red-400 border border-transparent rounded-md hover:bg-red-600"
+                    className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-red-400 border border-transparent rounded-md hover:bg-red-600" onClick={deleteAddressHandler}
                   >
                     Delete
                   </button>
