@@ -57,7 +57,7 @@ useEffect(()=>{
             ) : (
             <Link href="/me">
               <div className="flex items-center mb-4 space-x-3 mt-4 cursor-pointer">
-                <Image className="w-10 h-10 rounded-full" src={user?.avatar?user?.avatar?.url: "/images/default_avatar.png"} alt='user'  height="10"
+                <Image className="w-10 h-10 rounded-full" src={user?.avatar?user?.avatar?.url: "/images/default.png"} alt='user'  height="10"
                 width="10"/>
                 <div className="space-y-1 font-medium">
                   <p>

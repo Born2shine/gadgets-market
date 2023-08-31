@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [updated, setUpdated] = useState(false);
+  const [loading, setLoading] = useState(null);
   const router = useRouter();
 
   const registerUser = async ({ name, email, password }) => {
@@ -21,23 +22,46 @@ export const AuthProvider = ({ children }) => {
       password,
     });
     if (data) {
+      toast.success("SignUp Successful!!");
       router.push("/");
     } else {
       toast.error("ERROR!!");
+      setError(response?.data?.message);
     }
-
-    // if (data?.user) {
-    //   toast.success("SignUp Successful!!");
-    //   router.push("/");
-    //   // setTimeout(() => {
-
-    //   // }, 1500);
-    // } else if (!data?.user) {
-    //   console.log(response?.data?.message);
-    //   setError(response?.data?.message);
-    //   toast.error("failed");
-    // }
   };
+
+  const loadUser = async () => {
+    const { data } = await axios.get("/api/auth/session?update");
+    if (data) {
+      router.push("/me");
+    } else {
+      setError(response?.data?.message);
+    }
+  };
+
+  const updateUser = async (formData) => {
+    setLoading(true);
+    const { data } = await axios.put(
+      `${process.env.URL}/api/auth/me/update`,
+      formData,
+      {
+        headers: {
+          "content-Type": "multipart/form-data",
+        },
+      }
+    );
+    if (data) {
+      toast.success("update Successful!!");
+      setLoading(false);
+      router.push("/me");
+    } else {
+      toast.error("ERROR!!");
+      setLoading(false);
+      console.log(response?.data);
+      setError(response?.data?.message);
+    }
+  };
+
   const addNewAddress = async (newAddress, cookiesToken) => {
     try {
       const { data } = await axios.post(`${process.env.URL}/api/address`, {
@@ -99,10 +123,12 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         registerUser,
+        loading,
         user,
         updated,
         error,
         setUser,
+        updateUser,
         clearError,
         addNewAddress,
         updateAddress,
