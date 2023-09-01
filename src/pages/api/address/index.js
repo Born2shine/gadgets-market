@@ -12,6 +12,13 @@ const router = createRouter();
 
 dbConnect();
 
+// export const config = {
+//   api: {
+//     externalResolver: true,
+//     bodyParser: false,
+//   },
+// };
+
 router.use(isLoggedIN).post(newAddress);
 router.use(isLoggedIN).get(getAllAddress);
 router.delete(deleteAllAddress);

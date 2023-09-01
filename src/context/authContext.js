@@ -31,9 +31,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   const loadUser = async () => {
+    setLoading(true);
+
     const { data } = await axios.get("/api/auth/session?update");
     if (data) {
-      router.push("/me");
+      // console.log(data);
+      setUser(data.user);
+      setLoading(false);
+      router.replace("/me");
     } else {
       setError(response?.data?.message);
     }
@@ -52,8 +57,9 @@ export const AuthProvider = ({ children }) => {
     );
     if (data) {
       toast.success("update Successful!!");
+      console.log(data);
       setLoading(false);
-      router.push("/me");
+      loadUser();
     } else {
       toast.error("ERROR!!");
       setLoading(false);

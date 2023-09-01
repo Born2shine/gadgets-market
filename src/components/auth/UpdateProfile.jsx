@@ -49,10 +49,13 @@ const onchange=(e)=>{
     }
   }
 
-  console.log(e.target.files[0])
-
+  const file  = e.target.files[0]
+  // console.log(file.type) 
+  // console.log(file) 
   setAvatar(e.target.files[0])
-  if(e.target.files[0]){ reader.readAsDataURL(e.target.value)}
+  if(file && file.type.match("image.*")){ 
+    reader.readAsDataURL(e.target.value)
+  }
  
 }
 

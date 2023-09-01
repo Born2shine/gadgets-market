@@ -23,7 +23,7 @@ const isLoggedIN = catchAsync(async (req, res, next) => {
 
   req.user = session.user;
 
-  console.log(req.user);
+  // console.log(req.user);
 
   next();
 });

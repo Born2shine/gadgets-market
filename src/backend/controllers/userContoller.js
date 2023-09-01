@@ -23,12 +23,22 @@ export const getAllUsers = async (req, res, next) => {
 };
 
 export const updateUser = async (req, res, next) => {
-  const newUserData = { name: req.body.name, email: req.body.email };
+  const newUserData = {
+    name: req.body.name,
+    email: req.body.email,
+  };
+
+  console.log(newUserData);
+
+  // console.log(req.files);
 
   if (req.files.length > 0) {
     const uploader = async (path) => await uploads(path, "buyitnow/avatars");
 
     const file = req.files[0];
+
+    console.log(file);
+
     const { path } = file;
 
     const avatarResponse = await uploader(path);
@@ -37,6 +47,8 @@ export const updateUser = async (req, res, next) => {
   }
 
   const updatedUser = await User.findByIdAndUpdate(req.user._id, newUserData);
+
+  console.log("updated------", updatedUser);
 
   // return NextResponse.json({ newProduct });
   res.status(200).json({
