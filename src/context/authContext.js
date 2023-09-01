@@ -68,7 +68,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const addNewAddress = async (newAddress, cookiesToken) => {
+  const updatePassword = async ({ newPassword, currentPassword }) => {
+    const { data } = await axios.put(
+      `${process.env.URL}/api/auth/me/update_password`,
+      { newPassword, currentPassword }
+    );
+    if (data.success) {
+      toast.success("update Successful!!");
+      router.replace("/me");
+    } else {
+      setError(response?.data?.message);
+    }
+  };
+
+  const addNewAddress = async (newAddress) => {
     try {
       const { data } = await axios.post(`${process.env.URL}/api/address`, {
         newAddress,
@@ -138,6 +151,7 @@ export const AuthProvider = ({ children }) => {
         clearError,
         addNewAddress,
         updateAddress,
+        updatePassword,
         setUpdated,
         deleteAddress,
       }}

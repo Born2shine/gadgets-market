@@ -27,7 +27,10 @@ export default async function auth(req, res) {
             throw new Error("invalid email or password");
           }
 
-          const isPasswordMatch = await bcrypt.compare(password, user.password);
+          const isPasswordMatch = await bcrypt.compare(
+            req.body.password,
+            user.password
+          );
 
           if (!isPasswordMatch) {
             throw new Error("invalid email or password");
