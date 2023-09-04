@@ -9,7 +9,7 @@ const BreadCrumbs = ({breadcrumbs}) => {
     <section className="py-5 sm:py-7 bg-blue-100">
       <div className="container max-w-screen-xl mx-auto px-4">
         <ol className="inline-flex flex-wrap text-gray-600 space-x-1 md:space-x-3 items-center">
-          {breadcrumbs.map((el, i)=>(
+          {breadcrumbs?.map((el, i)=>(
           <li className="inline-flex items-center" key={el}>
             <Link href={el.url} className="text-gray-600 hover:text-blue-600">
               {el.name}

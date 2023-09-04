@@ -9,7 +9,7 @@ import { useContext } from "react";
 
 
 const Cart = () => {
-  const {addItemToCart, deleteCartItem, cart} = useContext(CartContext)
+  const {addItemToCart, deleteCartItem, cart, saveOnCheckout} = useContext(CartContext)
 
   const increaseQty = (cartItem)=>{
     const newQty = cartItem.quantity + 1; 
@@ -34,6 +34,16 @@ const Cart = () => {
 const taxAmount = (amountWithoutTax * 0.15).toFixed(2)
 
 const totalAmount = (Number(taxAmount) + Number(amountWithoutTax)).toFixed(2)
+
+const checkoutHandler = ()=>{
+  const data = {
+    amount: amountWithoutTax,
+    tax: taxAmount,
+    totalAmount,
+  }
+
+  saveOnCheckout(data)
+}
   return (
     <>
       <section className="py-5 sm:py-7 bg-blue-100">
@@ -136,7 +146,7 @@ const totalAmount = (Number(taxAmount) + Number(amountWithoutTax)).toFixed(2)
                   </li>
                 </ul>
 
-                <a className="px-4 py-3 mb-2 inline-block text-lg w-full text-center font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 cursor-pointer">
+                <a className="px-4 py-3 mb-2 inline-block text-lg w-full text-center font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 cursor-pointer" onClick={checkoutHandler}>
                   Continue
                 </a>
 

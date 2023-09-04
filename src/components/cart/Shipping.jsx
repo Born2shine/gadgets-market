@@ -1,20 +1,48 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import BreadCrumbs from "../layout/BreadCrumbs";
+"use client"
 
-const Shipping = () => {
+import React from "react";
+import Link from "next/link";
+import BreadCrumbs from "../layout/BreadCrumbs";
+import { useContext } from "react";
+import CartContext from "@/context/cardContext";
+import { useState } from "react";
+import { toast } from "react-toastify";
+
+const Shipping = ({addresses}) => {
+
+  const [shippingInfo, setShippingInfo] = useState('')
+ 
+  const {cart } = useContext(CartContext)
+
+  const setShippingAddress = (add)=>{
+    setShippingInfo(add._id)
+  }
+
+  const checkoutHandler = async ()=>{
+    if(!shippingInfo){
+      return toast.error('please select your shipping address')
+    }else{
+      // move to stripe checkoutpage
+    }
+  }
+
+  const breadCrumbs = [
+    {name: 'Home', url:"/"},
+    {name: 'Cart', url:"/cart"},
+    {name: 'Order', url:""},
+  ]
   return (
     <div>
-      <BreadCrumbs />
+      <BreadCrumbs breadcrumbs={breadCrumbs}/>
       <section className="py-10 bg-gray-50">
         <div className="container max-w-screen-xl mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-4 lg:gap-8">
             <main className="md:w-2/3">
               <article className="border border-gray-200 bg-white shadow-sm rounded p-4 lg:p-6 mb-5">
-                <h2 class="text-xl font-semibold mb-5">Shipping information</h2>
-
+                <h2 class="text-xl font-semibold mb-5">Shipping information</h2>                
                 <div class="grid sm:grid-cols-2 gap-4 mb-6">
-                  <label class="flex p-3 border border-gray-200 rounded-md bg-gray-50 hover:border-blue-400 hover:bg-blue-50 cursor-pointer">
+                {addresses?.map((address)=>(
+                  <label class="flex p-3 border border-gray-200 rounded-md bg-gray-50 hover:border-blue-400 hover:bg-blue-50 cursor-pointer" key={address._id} onClick={()=> setShippingAddress(address)}>
                     <span>
                       <input
                         name="shipping"
@@ -23,20 +51,22 @@ const Shipping = () => {
                       />
                     </span>
                     <p class="ml-2">
-                      <span>1295 street</span>
+                      <span>{address.street}</span>
                       <small class="block text-sm text-gray-400">
-                        Orlando, FL, 84753
+                        {address.city}, {address.state}, {address.zipCode}
                         <br />
-                        US
+                       {address.country}
                         <br />
-                        9871234576
+                        {address.phoneNo}
                       </small>
                     </p>
                   </label>
+
+))}
                 </div>
 
                 <Link
-                  to="/address/new"
+                  href="/address/new"
                   className="px-4 py-2 inline-block text-blue-600 border border-gray-300 rounded-md hover:bg-gray-100"
                 >
                   <i className="mr-1 fa fa-plus"></i> Add new address
@@ -44,12 +74,13 @@ const Shipping = () => {
 
                 <div className="flex justify-end space-x-2 mt-10">
                   <Link
-                    to="/cart"
+                    href="/cart"
                     className="px-5 py-2 inline-block text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600"
                   >
                     Back
                   </Link>
-                  <a className="px-5 py-2 inline-block text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 cursor-pointer">
+                  <a className="px-5 py-2 inline-block text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 cursor-pointer"  onClick={checkoutHandler} >  
+                  {/* */}
                     Checkout
                   </a>
                 </div>
@@ -61,41 +92,43 @@ const Shipping = () => {
                 <ul>
                   <li className="flex justify-between mb-1">
                     <span>Amount:</span>
-                    <span>$343</span>
+                    <span>${cart?.checkoutInfo?.amount}</span>
                   </li>
                   <li className="flex justify-between mb-1">
                     <span>Est TAX:</span>
-                    <span>$34</span>
+                    <span>${cart?.checkoutInfo?.tax}</span>
                   </li>
                   <li className="border-t flex justify-between mt-3 pt-3">
                     <span>Total Amount:</span>
-                    <span className="text-gray-900 font-bold">$343</span>
+                    <span className="text-gray-900 font-bold">${cart?.checkoutInfo?.totalAmount}</span>
                   </li>
                 </ul>
 
                 <hr className="my-4" />
 
                 <h2 class="text-lg font-semibold mb-3">Items in cart</h2>
-
-                <figure class="flex items-center mb-4 leading-5">
+                {cart?.cartItems?.map((item)=>(
+                <figure class="flex items-center mb-4 leading-5" key={item._id}>
                   <div>
                     <div class="block relative w-20 h-20 rounded p-1 border border-gray-200">
                       <img
                         width="50"
                         height="50"
-                        src={"/logo192.png"}
-                        alt="Title"
+                        src={item.image}
+                        alt={item.name}
                       />
                       <span class="absolute -top-2 -right-2 w-6 h-6 text-sm text-center flex items-center justify-center text-white bg-gray-400 rounded-full">
-                        3
+                        {item.quantity}
                       </span>
                     </div>
                   </div>
                   <figcaption class="ml-3">
-                    <p> product name</p>
-                    <p class="mt-1 text-gray-400">Total: $34</p>
+                    <p> {item.name?.substring(0, 50)}</p>
+                    <p class="mt-1 text-gray-400">Total: ${(item.quantity * item.price).toFixed(2)}</p>
                   </figcaption>
                 </figure>
+
+                ))}
               </article>
             </aside>
           </div>

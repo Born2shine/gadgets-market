@@ -50,8 +50,10 @@ const onchange=(e)=>{
   }
 
   const file  = e.target.files[0]
-  // console.log(file.type) 
-  // console.log(file) 
+  console.log(file.type) 
+  console.log(file)
+  console.log(e.target.value) 
+ 
   setAvatar(e.target.files[0])
   if(file && file.type.match("image.*")){ 
     reader.readAsDataURL(e.target.value)
@@ -108,8 +110,10 @@ const onchange=(e)=>{
                         <input
                           className="form-control block w-full px-2 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none mt-6"
                           type="file"
+                          accept="image/*"
+                          name="image"
                           id="formFile"
-                          onChange={onchange}
+                          onChange={(e)=>onchange(e)}
                         />
                       </div>
                     </div>
