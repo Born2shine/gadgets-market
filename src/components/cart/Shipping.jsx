@@ -7,6 +7,7 @@ import { useContext } from "react";
 import CartContext from "@/context/cardContext";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const Shipping = ({addresses}) => {
 
@@ -21,9 +22,23 @@ const Shipping = ({addresses}) => {
   const checkoutHandler = async ()=>{
     if(!shippingInfo){
       return toast.error('please select your shipping address')
-    }else{
-      // move to stripe checkoutpage
     }
+
+    try{
+      const {data} = await axios.post(`${process.env.URL}/api/orders/checkout_session`,{
+        items: cart?.cartItems,
+        shippingInfo
+
+      }) 
+
+      console.log(data)
+
+      window.location.href = data.url
+
+    }catch(err){
+      console.log(err.response)
+    }
+
   }
 
   const breadCrumbs = [
