@@ -7,15 +7,16 @@ const { default: AppError } = require("../utils/errClass");
 
 catchAsync;
 
-const isLoggedIN = catchAsync(async (req, res, next) => {
+const isLoggedIN = async (req, res, next) => {
   // const session = await getSession({ req });
   const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
   if (!session) {
     console.log(session);
-    console.log("its not working ooooo");
-    // res.status(401).json({ message: "not allowed" });
-    // return next(new AppError("please do log in to gain access", 401));
+    console.log("you are not logged in ooooo");
+
+    // return next(new AppError("please login to access this page", 401));
+
     return res
       .status(401)
       .json({ message: "please login to access this page" });
@@ -26,6 +27,6 @@ const isLoggedIN = catchAsync(async (req, res, next) => {
   // console.log(req.user);
 
   next();
-});
+};
 
 export { isLoggedIN };

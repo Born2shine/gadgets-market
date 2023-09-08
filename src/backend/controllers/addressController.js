@@ -11,7 +11,7 @@ export const newAddress = async (req, res) => {
 };
 
 export const getAllAddress = async (req, res, next) => {
-  const addresses = await Address.find({ user: req.user._id });
+  const addresses = await Address.find({ user: req.user?._id });
 
   res.status(200).json({ addresses });
 };

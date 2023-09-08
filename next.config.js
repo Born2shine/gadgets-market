@@ -11,6 +11,8 @@ const nextConfig = {
       "pk_test_51NmwSbFKNIl4RqjzSc6wMXL5wvNPILzI8Uw9mI8fHmgdzdIi4ZRp4W2eMfQ5ajDl7jgSp2f4dTe9a9ife0fkQcyb002vWK4QCf",
     stripe_secret_key:
       "sk_test_51NmwSbFKNIl4RqjzL7MvILaDWcUB9yTfefrKez2BCANaWnAVnuzaGX5kAkiShz8kFzyvEL7HKapDNdaqHeda5VJL00P7Tv9Z4G",
+    stripe_webhook_secret:
+      "whsec_df46cc50cdb18aae29269604e120e1f572e424cd7f20f1b9490d9c17963f5189",
   },
   images: {
     domains: ["res.cloudinary.com"],
