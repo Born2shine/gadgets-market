@@ -28,7 +28,6 @@ const Shipping = ({addresses}) => {
       const {data} = await axios.post(`${process.env.URL}/api/orders/checkout_session`,{
         items: cart?.cartItems,
         shippingInfo
-
       }) 
 
       console.log(data)

@@ -43,7 +43,7 @@ useEffect(()=>{
             >
               <i className="text-gray-400 w-5 fa fa-shopping-cart"></i>
               <span className="hidden lg:inline ml-1">
-                Cart (<b>{cart?.cartItems?.length}</b>)
+                Cart (<b>{ cart?.cartItems? cart?.cartItems?.length : 0}</b>)
               </span>
             </Link>
             {!user? (

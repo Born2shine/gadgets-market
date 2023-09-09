@@ -1,21 +1,38 @@
-import React from "react";
-import OrderItem from "./OrderItem";
-import Sidebar from "../layout/Sidebar";
+'use client'
 
-const ListOrders = () => {
+import React, { useContext, useEffect } from "react";
+import OrderItem from "./OrderItem";
+import CustomPagination from "../layout/customPagination";
+import CartContext from "@/context/cardContext";
+import { useRouter, useSearchParams } from "next/navigation";
+
+
+const ListOrders = ({orders}) => {
+
+  console.log(orders)
+  const{clearCart} = useContext(CartContext)
+
+const router = useRouter()
+const params = useSearchParams()
+
+const orderSuccess = params.get("order_success")
+
+useEffect(()=>{
+  if(orderSuccess){
+    clearCart()
+    router.replace("/me/orders")
+  }
+})
+
   return (
-    <>
-      <section className="py-10">
-        <div className="container max-w-screen-xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row -mx-4">
-            <Sidebar />
-            <main className="md:w-2/3 lg:w-3/4 px-4">
-              <h3 className="text-xl font-semibold mb-5">Your Orders</h3>
-              <OrderItem />
-            </main>
-          </div>
-        </div>
-      </section>
+    <>     
+      <h3 className="text-xl font-semibold mb-5">Your Orders</h3>
+      {orders?.orders?.map((order)=>(
+        <OrderItem key={order.id} order={order}/>
+        
+      ))}
+      <CustomPagination resPerPage={orders?.resPerPage}
+      productsCount={orders?.ordersCount}/>
     </>
   );
 };

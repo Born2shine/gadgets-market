@@ -1,8 +1,28 @@
 import getRawBody from "raw-body";
 import Stripe from "stripe";
 import Order from "@/backend/models/orderModel";
+import ApiFilters from "../utils/apiFilters";
 
 const stripe = new Stripe(process.env.stripe_secret_key);
+
+export const myOrders = async (req, res, next) => {
+  const resPerPage = 2;
+  const ordersCount = await Order.countDocuments();
+
+  const apiFilter = new ApiFilters(Order.find(), req.query).pagination(
+    resPerPage
+  );
+
+  const orders = await apiFilter.query
+    .find({ user: req.user._id })
+    .populate("shippingInfo user");
+
+  res.status(200).json({
+    ordersCount,
+    resPerPage,
+    orders,
+  });
+};
 
 export const checkoutSession = async (req, res, next) => {
   const body = req.body;
