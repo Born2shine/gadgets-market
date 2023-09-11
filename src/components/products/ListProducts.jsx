@@ -4,7 +4,7 @@ import React from "react";
 
 
 import Filters from "../layout/Filters";
-import Header from "../layout/Header";
+
 import ProductItem from "./productItem";
 import CustomPagination from "../layout/customPagination";
 

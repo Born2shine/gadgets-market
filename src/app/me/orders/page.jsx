@@ -29,7 +29,7 @@ const getAllOrders= async(searchParams)=>{
 
 const myOrdersPage = async({searchParams}) => {  
     const orders = await getAllOrders(searchParams)
-    console.log(orders)
+   
     
     return  <ListOrders orders={orders}/> ;
 }

@@ -1,10 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 import {signOut} from "next-auth/react"
+import AuthContext from "@/context/authContext";
 
 const Sidebar = () => {
+
+
+  const {user } = useContext(AuthContext)
 
 const logoutHandler =()=>{
   signOut();
@@ -13,6 +17,7 @@ const logoutHandler =()=>{
   return (
     <aside className="md:w-1/3 lg:w-1/4 px-4">
       <ul className="sidebar">
+        {user?.role==="admin" && (
         <>
           <li>
             {" "}
@@ -56,6 +61,8 @@ const logoutHandler =()=>{
 
           <hr />
         </>
+
+        )}
 
         <li>
           {" "}

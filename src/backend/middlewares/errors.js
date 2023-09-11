@@ -17,9 +17,9 @@ module.exports = (err, req, res, next) => {
   }
 
   if (err.code == 11000) {
-    const message = `Duplicate ${Object.keys(err.keyValue)} entered`;
+    // const message = `Duplicate ${Object.keys(err.keyValue)} entered`;
 
-    error = new AppError(message, 400);
+    error = new AppError("user already exists", 400);
   }
 
   // throw new AppError(error.message, error.status);

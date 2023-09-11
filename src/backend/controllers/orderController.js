@@ -88,7 +88,7 @@ async function getCartItem(line_items) {
 }
 
 export const webhook = async (req, res) => {
-  // console.log("req---------------->", req);
+
 
   try {
     const rawBody = await getRawBody(req);
@@ -106,7 +106,7 @@ export const webhook = async (req, res) => {
         event.data.object.id
       );
 
-      console.log(session);
+      
 
       const orderItems = await getCartItem(line_items);
 
@@ -127,7 +127,7 @@ export const webhook = async (req, res) => {
         orderItems,
       };
 
-      console.log("orderdata------->", orderData);
+
 
       const order = await Order.create(orderData);
 

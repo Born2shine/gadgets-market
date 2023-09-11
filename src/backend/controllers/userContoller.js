@@ -5,8 +5,8 @@ import fs from "fs";
 import bcrypt from "bcryptjs";
 
 export const registerUser = async (req, res, next) => {
-  const { name, email, password } = req.body;
-  const newUser = await User.create({ name, email, password });
+  const { name, email, password, role } = req.body;
+  const newUser = await User.create({ name, email, password, role });
 
   if (!newUser) {
     return next(new AppError());
@@ -48,8 +48,6 @@ export const updateUser = async (req, res, next) => {
   }
 
   const updatedUser = await User.findByIdAndUpdate(req.user._id, newUserData);
-
-  console.log("updated------", updatedUser);
 
   // return NextResponse.json({ newProduct });
   res.status(200).json({
