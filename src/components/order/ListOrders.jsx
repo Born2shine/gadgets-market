@@ -9,7 +9,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 const ListOrders = ({orders}) => {
 
-  console.log(orders)
+
   const{clearCart} = useContext(CartContext)
 
 const router = useRouter()
@@ -22,7 +22,7 @@ useEffect(()=>{
     clearCart()
     router.replace("/me/orders")
   }
-})
+}, [orderSuccess])
 
   return (
     <>     

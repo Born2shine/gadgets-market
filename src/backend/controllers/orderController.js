@@ -48,7 +48,7 @@ export const checkoutSession = async (req, res, next) => {
     success_url: `${process.env.URL}/me/orders?order_success=true`,
     cancel_url: `${process.env.URL}`,
     customer_email: req?.user?.email,
-    cleint_reference_id: req?.user?.id,
+    client_reference_id: req?.user?._id,
     mode: "payment",
     metadata: { shippingInfo },
     shipping_options: [
@@ -64,7 +64,7 @@ export const checkoutSession = async (req, res, next) => {
   });
 };
 
-const getCartItem = async (line_items) => {
+async function getCartItem(line_items) {
   return new Promise((resolve, reject) => {
     let cartItems = [];
 
@@ -80,14 +80,16 @@ const getCartItem = async (line_items) => {
         image: product.images[0],
       });
 
-      if (cartItems.length === line_items?.length) {
+      if (cartItems.length === line_items?.data.length) {
         resolve(cartItems);
       }
     });
   });
-};
+}
 
 export const webhook = async (req, res) => {
+  // console.log("req---------------->", req);
+
   try {
     const rawBody = await getRawBody(req);
     const signature = req.headers["stripe-signature"];
@@ -96,7 +98,7 @@ export const webhook = async (req, res) => {
       signature,
       process.env.stripe_webhook_secret
     );
-
+    // console.log("events---------------->", event);
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
 
@@ -104,9 +106,11 @@ export const webhook = async (req, res) => {
         event.data.object.id
       );
 
+      console.log(session);
+
       const orderItems = await getCartItem(line_items);
 
-      const userId = session.cleint_reference_id;
+      const userId = session.client_reference_id;
       const amountPaid = session.amount_total / 100;
 
       const paymentInfo = {
@@ -123,6 +127,8 @@ export const webhook = async (req, res) => {
         orderItems,
       };
 
+      console.log("orderdata------->", orderData);
+
       const order = await Order.create(orderData);
 
       res.status(201).json({
@@ -133,3 +139,11 @@ export const webhook = async (req, res) => {
     console.log(err);
   }
 };
+
+// export const getAllOrder = async (req, res) => {
+//   const orders = await Order.find();
+
+//   res.status(200).json({
+//     orders,
+//   });
+// };

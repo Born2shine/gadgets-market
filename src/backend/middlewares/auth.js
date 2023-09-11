@@ -15,7 +15,7 @@ const isLoggedIN = async (req, res, next) => {
     console.log(session);
     console.log("you are not logged in ooooo");
 
-    // return next(new AppError("please login to access this page", 401));
+    // await next(new AppError("please login to access this page", 401));
 
     return res
       .status(401)
