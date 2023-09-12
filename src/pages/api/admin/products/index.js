@@ -1,16 +1,14 @@
 import { createRouter } from "next-connect";
 import dbConnect from "@/backend/config/dbconfig";
-import {
-  createAllProducts,
-  getAllProducts,
-} from "@/backend/controllers/productController";
+
 import onError from "@/backend/middlewares/errors";
+import { authorizeRole, isLoggedIN } from "@/backend/middlewares/auth";
+import { newProduct } from "@/backend/controllers/productController";
 
 const router = createRouter();
 
 dbConnect();
 
-// router.post(createAllProducts);
-router.get(getAllProducts);
+router.use(isLoggedIN, authorizeRole("admin")).post(newProduct);
 
 export default router.handler({ onError });

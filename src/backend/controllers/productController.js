@@ -11,6 +11,8 @@ import ApiFilters from "../utils/apiFilters";
 // };
 
 export const newProduct = async (req, res, next) => {
+  req.body.user = req.user?._id;
+
   const newProduct = await Product.create(req.body);
 
   // return NextResponse.json({ newProduct });

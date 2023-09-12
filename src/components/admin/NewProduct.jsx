@@ -1,7 +1,21 @@
-import React from "react";
-import Sidebar from "../layout/Sidebar";
+'use client'
+
+import React, { useState } from "react";
+
 
 const NewProduct = () => {
+
+const [product, setProduct] = useState({
+  name:"",
+  description:"",
+  price: "",
+  stock: "",
+  seller: "",
+  category: "",
+  
+})
+
+
   const categories = [
     "Electronics",
     "Cameras",
@@ -12,11 +26,7 @@ const NewProduct = () => {
   ];
 
   return (
-    <section className="py-10">
-      <div className="container max-w-screen-xl mx-auto px-4">
-        <div className="flex flex-col md:flex-row -mx-4">
-          <Sidebar />
-          <main className="md:w-2/3 lg:w-3/4 px-4">
+    
             <section class="container max-w-3xl p-6 mx-auto">
               <h1 class="mb-3 text-xl md:text-3xl font-semibold text-black mb-8">
                 Create New Product
@@ -124,10 +134,7 @@ const NewProduct = () => {
                 </button>
               </form>
             </section>
-          </main>
-        </div>
-      </div>
-    </section>
+         
   );
 };
 

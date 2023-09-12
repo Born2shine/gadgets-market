@@ -29,4 +29,16 @@ const isLoggedIN = async (req, res, next) => {
   next();
 };
 
-export { isLoggedIN };
+const authorizeRole = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res
+        .status(401)
+        .json({ message: "you are not Authorized to perform this action" });
+    }
+
+    next();
+  };
+};
+
+export { isLoggedIN, authorizeRole };
