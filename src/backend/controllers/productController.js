@@ -3,7 +3,8 @@
 import Product from "../models/product";
 
 import ApiFilters from "../utils/apiFilters";
-
+import { uploads } from "../utils/cloudnary";
+import fs from "fs";
 // export const createAllProducts = async (req, res, next) => {
 //   const products = await Product.create(product);
 
@@ -47,4 +48,33 @@ export const getProduct = async (req, res, next) => {
 
   // return NextResponse.json({ products });
   res.status(200).json({ product });
+};
+
+export const uploadProductImages = async (req, res, next) => {
+  let product = await Product.findById(req.query.id);
+
+  if (!product) {
+    res.status(404).json({
+      error: "product not found",
+    });
+  }
+
+  const uploader = async (path) => await uploads(path, "buyitnow/products");
+
+  const urls = [];
+
+  const files = req.files[0];
+
+  for (const file of files) {
+    const { path } = file;
+    const newPath = await uploader(path);
+    urls.push(newPath);
+    fs.unlinkSync(path);
+  }
+
+  product = await Product.findByIdAndUpdate(req.query.id, {
+    images: urls,
+  });
+
+  res.status(200).json({ data: urls, product });
 };

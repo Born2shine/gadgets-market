@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { CookiesProvider } from 'react-cookie';
+import { ProductProvider } from "@/context/productContext";
 
 
 export function GlobalProvider({ children }) {
@@ -16,9 +17,11 @@ hideProgressBar={true}/>
 <CookiesProvider defaultSetCookies={{ path: '/' }}>
     <AuthProvider>
       <CartProvider>
+        <ProductProvider>
           <SessionProvider>
             {children}
           </SessionProvider>
+          </ProductProvider>
       </CartProvider>
      </AuthProvider>
      </CookiesProvider>

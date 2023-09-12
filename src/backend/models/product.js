@@ -45,10 +45,6 @@ const productSchema = new mongoose.Schema({
   stock: {
     type: Number,
     required: [true, "please enter a stock"],
-  },
-
-  stock: {
-    type: Number,
     default: 0,
   },
 
@@ -76,7 +72,6 @@ const productSchema = new mongoose.Schema({
   },
   ratings: {
     type: Number,
-    required: true,
   },
   createdAt: {
     type: Date,
