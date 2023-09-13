@@ -10,13 +10,12 @@ dbConnect();
 
 export const config = {
   api: {
-    externalResolver: true,
     bodyParser: false,
   },
 };
 
-const uploadMiddleware = upload.array("image");
+const uploadMiddleware = upload.single("image");
 
-router.use(isLoggedIN, uploadMiddleware).put(updateUser);
+router.use(uploadMiddleware).put(updateUser);
 
 export default router.handler({ onError });

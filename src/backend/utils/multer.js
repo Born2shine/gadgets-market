@@ -2,7 +2,7 @@ import multer from "multer";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/uploads");
+    cb(null, "public/images/users");
   },
   filename: function (req, file, cb) {
     cb(null, new Date().toISOString() + "-" + file.originalname);
@@ -18,7 +18,7 @@ const fileFilter = (req, file, cb) => {
     cb(null, true);
   } else
     ({
-      error: "Unsurpported file Format please upload JPG/PNG/JPEG",
+      error: "Unsupported file Format please upload JPG/PNG/JPEG",
     }),
       false;
 };

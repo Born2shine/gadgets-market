@@ -18,6 +18,7 @@
     "country-list": "^2.3.0",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
+    "formidable": "^3.5.1",
     "mongoose": "^7.4.1",
     "multer": "^1.4.5-lts.1",
     "next": "13.4.12",

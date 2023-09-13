@@ -3,6 +3,7 @@ import { uploads } from "../utils/cloudnary";
 import AppError from "../utils/errClass";
 import fs from "fs";
 import bcrypt from "bcryptjs";
+import formidable from "formidable";
 
 export const registerUser = async (req, res, next) => {
   const { name, email, password, role } = req.body;
@@ -24,35 +25,58 @@ export const getAllUsers = async (req, res, next) => {
 };
 
 export const updateUser = async (req, res, next) => {
-  const newUserData = {
-    name: req.body.name,
-    email: req.body.email,
-  };
+  const data = await new Promise((resolve, reject) => {
+    const form = formidable({});
+    form.parse(req, (err, fields, files) => {
+      if (err) {
+        reject({ err });
+        return;
+      }
+      resolve({ err, fields, files });
+    });
+  });
 
-  console.log(newUserData);
+  console.log(data);
 
-  // console.log(req.files);
+  // const newUserData = {
+  //   name: req.body.name,
+  //   email: req.body.email,
+  // };
 
-  if (req.files.length > 0) {
-    const uploader = async (path) => await uploads(path, "buyitnow/avatars");
+  // console.log(newUserData);
 
-    const file = req.files[0];
+  // const form = formidable({});
 
-    console.log(file);
+  // form.parse(req, (err, fields, files) => {
+  //   if (err) {
+  //     next(err);
+  //     return;
+  //   }
+  //   console.log(fields);
+  // });
 
-    const { path } = file;
+  // const file = req.files;
 
-    const avatarResponse = await uploader(path);
-    fs.unlinkSync(path);
-    newUserData.avatar = avatarResponse;
-  }
+  // if (req.files.length > 0) {
+  //   const uploader = async (path) => await uploads(path, "buyitnow/avatars");
 
-  const updatedUser = await User.findByIdAndUpdate(req.user._id, newUserData);
+  //   const file = req.files[0];
+
+  //   console.log(file);
+
+  //   const { path } = file;
+
+  //   const avatarResponse = await uploader(path);
+  //   fs.unlinkSync(path);
+  //   newUserData.avatar = avatarResponse;
+  // }
+
+  // const updatedUser = await User.findByIdAndUpdate(req.user._id, newUserData);
 
   // return NextResponse.json({ newProduct });
   res.status(200).json({
     status: "SUCESS",
-    updatedUser,
+    // updatedUser,
   });
 };
 
