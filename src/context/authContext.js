@@ -48,12 +48,12 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     const { data } = await axios.put(
       `${process.env.URL}/api/auth/me/update`,
-      formData,
-      {
-        headers: {
-          "content-Type": "multipart/form-data",
-        },
-      }
+      formData
+      // {
+      //   headers: {
+      //     "content-Type": "multipart/form-data",
+      //   },
+      // }
     );
     if (data) {
       toast.success("update Successful!!");

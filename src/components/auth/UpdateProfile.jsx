@@ -49,23 +49,19 @@ const submitHandler =(e)=>{
   formData.append('email', email)
   formData.append('image', avatar)
 
-  console.log(formData)
-  console.log(name)
-   console.log(email) 
-   console.log(avatar)
+  
+  console.log([...formData.entries()])
 
-  // updateUser(formData)
+  updateUser(formData)
 }
 
 const onchange=(e)=>{
- 
 
-  const file  = e.target.files[0]
-  console.log('hywgdgugvwuldvwlydulwgvwydwdbdbuhj', file)   
+  const file  = e.target.files[0]  
  
   setAvatar(file)
   
-  console.log(avatar) 
+
 } 
 
   return (
