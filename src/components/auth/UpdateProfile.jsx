@@ -14,6 +14,19 @@ const UpdateProfile = () => {
   const[avatar, setAvatar] = useState('')
   const[avatarPreview, setAvatarPreview] = useState('/images/default.png')
 
+useEffect(()=>{
+  if(avatar){
+    const reader = new FileReader();
+    reader.onloadend=()=>{
+      setAvatarPreview(reader.result)
+    }
+    reader.readAsDataURL(avatar)
+  }else{
+    console.log('not!')
+  }
+  
+},[avatar])
+
   useEffect(()=>{
     if(user){
       setEmail(user.email)
@@ -32,34 +45,28 @@ const submitHandler =(e)=>{
 
   const formData = new FormData()
 
-  formData.set('name', name)
-  formData.set('email', email)
-  formData.set('image', avatar)
+  formData.append('name', name)
+  formData.append('email', email)
+  formData.append('image', avatar)
 
+  console.log(formData)
+  console.log(name)
+   console.log(email) 
+   console.log(avatar)
 
-  updateUser(formData)
+  // updateUser(formData)
 }
 
 const onchange=(e)=>{
-  const reader = new FileReader()
-
-  reader.onload = ()=>{
-    if(reader.readyState === 2){
-      setAvatarPreview(reader.result)      
-    }
-  }
+ 
 
   const file  = e.target.files[0]
-  console.log(file.type) 
-  console.log(file)
-  console.log(e.target.value) 
+  console.log('hywgdgugvwuldvwlydulwgvwydwdbdbuhj', file)   
  
-  setAvatar(e.target.files[0])
-  if(file && file.type.match("image.*")){ 
-    reader.readAsDataURL(e.target.value)
-  }
- 
-}
+  setAvatar(file)
+  
+  console.log(avatar) 
+} 
 
   return (
     <>

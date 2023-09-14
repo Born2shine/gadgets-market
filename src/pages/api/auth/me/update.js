@@ -4,6 +4,7 @@ import { updateUser } from "@/backend/controllers/userContoller";
 import onError from "@/backend/middlewares/errors";
 import { isLoggedIN } from "@/backend/middlewares/auth";
 import upload from "@/backend/utils/multer";
+import { formData } from "@/backend/middlewares/formData";
 const router = createRouter();
 
 dbConnect();
@@ -14,7 +15,9 @@ export const config = {
   },
 };
 
-const uploadMiddleware = upload.single("image");
+//.use(uploadMiddleware)
+
+const uploadMiddleware = upload.array("image");
 
 router.use(uploadMiddleware).put(updateUser);
 
