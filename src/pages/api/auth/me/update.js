@@ -10,7 +10,10 @@ const router = createRouter();
 
 dbConnect();
 
-const upload = multer({ dest: "public/images/users" });
+const upload = multer({
+  dest: "public/images/users",
+  limits: { fieldSize: 1024 * 1024 },
+});
 
 export const config = {
   api: {
@@ -20,7 +23,7 @@ export const config = {
 
 //.use(uploadMiddleware)
 
-const uploadMiddleware = upload.array("image");
+const uploadMiddleware = upload.any("image");
 
 router.use(isLoggedIN, uploadMiddleware).put(updateUser);
 

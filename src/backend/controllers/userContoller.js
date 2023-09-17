@@ -25,23 +25,22 @@ export const getAllUsers = async (req, res, next) => {
 };
 
 export const updateUser = async (req, res, next) => {
-  // console.log("files------>", req.files);
+  console.log("files------>", req.files);
 
   // const formData = await req.formData();
 
   // const file = formData.get("file");
 
-  console.log("files------>", req.files);
+  // console.log("files------>", req.files);
 
   const newUserData = {
     name: req.body.name,
     email: req.body.email,
   };
 
-  console.log(newUserData);
-
   if (req.files.length > 0) {
-    // const uploader = async (path) => await uploads(path, "buyitnow/avatars");
+    const uploader = async (path) =>
+      await uploads(path, "egadgetsApp/userPhotos");
 
     const file = req.files[0];
 
@@ -49,17 +48,18 @@ export const updateUser = async (req, res, next) => {
 
     const { path } = file;
 
-    //   const avatarResponse = await uploader(path);
-    //   fs.unlinkSync(path);
-    //   newUserData.avatar = avatarResponse;
+    const avatarResponse = await uploader(path);
+    console.log(avatarResponse);
+    fs.unlinkSync(path);
+    newUserData.avatar = avatarResponse;
   }
 
-  // const updatedUser = await User.findByIdAndUpdate(req.user._id, newUserData);
+  // console.log(newUserData);
+  const updatedUser = await User.findByIdAndUpdate(req.user._id, newUserData);
 
-  // return NextResponse.json({ newProduct });
   res.status(200).json({
     status: "SUCESS",
-    // updatedUser,
+    updatedUser,
   });
 };
 

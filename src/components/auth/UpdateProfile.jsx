@@ -47,10 +47,8 @@ const submitHandler =(e)=>{
 
   formData.append('name', name)
   formData.append('email', email)
-  formData.append('image', avatar)
-
-  
-  console.log([...formData.entries()])
+  formData.append('image', avatar) 
+ 
 
   updateUser(formData)
 }

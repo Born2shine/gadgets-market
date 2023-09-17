@@ -35,7 +35,6 @@ export const AuthProvider = ({ children }) => {
 
     const { data } = await axios.get("/api/auth/session?update");
     if (data) {
-      // console.log(data);
       setUser(data.user);
       setLoading(false);
       router.replace("/me");
@@ -46,6 +45,7 @@ export const AuthProvider = ({ children }) => {
 
   const updateUser = async (formData) => {
     setLoading(true);
+    console.log([...formData.entries()]);
     const { data } = await axios.put(
       `${process.env.URL}/api/auth/me/update`,
       formData
