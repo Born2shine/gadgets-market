@@ -6,13 +6,15 @@ import multer from "multer";
 import { isLoggedIN } from "@/backend/middlewares/auth";
 // import upload from "@/backend/utils/multer";
 import { formData } from "@/backend/middlewares/formData";
+import { resizePhoto } from "@/backend/middlewares/resizeImage";
 const router = createRouter();
 
 dbConnect();
 
+// const storage = multer.memoryStorage();
 const upload = multer({
   dest: "public/images/users",
-  limits: { fieldSize: 1024 * 1024 },
+  // limits: { fieldSize: 1024 * 1024, fileSize: 500 },
 });
 
 export const config = {

@@ -1,12 +1,12 @@
 "use client";
 
-import ProductContext from "@/context/ProductContext";
+import ProductContext from "@/context/productContext";
 import React, { useState, useContext, useEffect } from "react";
 
 import { toast } from "react-toastify";
 
 const UpdateProduct = ({ data }) => {
-  const { updateProduct, error, updated, setUpdated, clearErrors } =
+  const { updateProduct, error, updated, setUpdated, clearError } =
     useContext(ProductContext);
 
   const [product, setProduct] = useState({
@@ -17,7 +17,7 @@ const UpdateProduct = ({ data }) => {
     stock: data?.stock,
     category: data?.category,
   });
-
+ 
   const { name, description, price, seller, stock, category } = product;
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const UpdateProduct = ({ data }) => {
     }
     if (error) {
       toast.error(error);
-      clearErrors();
+      clearError();
     }
   }, [error, updated]);
 

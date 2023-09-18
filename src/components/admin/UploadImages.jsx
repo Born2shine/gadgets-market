@@ -1,18 +1,62 @@
-import React from "react";
-import Sidebar from "../layout/Sidebar";
+"use client"
 
-const UploadImages = () => {
+
+import ProductContext from "@/context/productContext";
+import Image from "next/image";
+import React, { useContext, useEffect, useState } from "react";
+
+
+const UploadImages = ({id}) => {
+  const{loading, uploadProductImages, error, clearError} = useContext(ProductContext)
+  const [images, setImages]= useState([])
+  const [imagesPreview, setImagesPreview]= useState([])
+
+  useEffect(()=>{  
+
+  if(error){
+    toast.error(error)
+    clearError()
+  }
+  }, [error])
+
+
+const submitHandler =(e)=>{
+  e.preventDefault();
+
+  const formData = new FormData()
+
+  images.forEach((image)=>{
+    formData.append('image', image)
+  })
+
+  uploadProductImages(formData, id) 
+
+}
+
+  const onchange=(e)=>{
+    const files  = Array.from(e.target.files)  
+   setImages([])
+   setImagesPreview([])
+
+    files.forEach((file)=>{
+      const reader = new FileReader();
+      reader.onloadend=()=>{
+              setImagesPreview((oldArray)=>[...oldArray, reader.result])
+            }
+          reader.readAsDataURL(file)
+        setImages((oldArray)=>[...oldArray, files])
+    })
+    
+  
+  } 
   return (
-    <section className="py-10">
-      <div className="container max-w-screen-xl mx-auto px-4">
-        <div className="flex flex-col md:flex-row -mx-4">
-          <Sidebar />
-          <main className="md:w-2/3 lg:w-3/4 px-4">
+    
+         
             <div
               style={{ maxWidth: "480px" }}
               className="mt-1 mb-20 p-4 md:p-7 mx-auto rounded bg-white shadow-lg"
             >
-              <form>
+              <form onSubmit={submitHandler}>
                 <h2 className="mb-3 text-2xl font-semibold">
                   Upload Product Images
                 </h2>
@@ -24,32 +68,34 @@ const UploadImages = () => {
                       type="file"
                       id="formFile"
                       multiple
+                      onChange={onchange}
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-6 gap-2 my-5">
-                  <img
-                    src={"/logo192.png"}
-                    alt="Preview"
-                    className="col-span-1 object-contain shadow rounded border-2 border-gray p-2 h-full w-full"
-                    width="50"
-                    height="50"
-                  />
+                  {imagesPreview.map((img)=>(
+                    <Image
+                      src={img}
+                      key={img}
+                      alt="Preview"
+                      className="col-span-1 object-contain shadow rounded border-2 border-gray p-2 h-full w-full"
+                      width="50"
+                      height="50"
+                    />
+
+                  ))}
                 </div>
 
                 <button
                   type="submit"
                   className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
-                >
-                  Update
+                >{loading? "uploading" : "Upload"}
+                 
                 </button>
               </form>
             </div>
-          </main>
-        </div>
-      </div>
-    </section>
+         
   );
 };
 

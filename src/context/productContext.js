@@ -28,6 +28,55 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
+  const updateProduct = async (product, id) => {
+    const { data } = await axios.put(
+      `${process.env.URL}/api/admin/products/${id}`,
+      product
+    );
+    if (data) {
+      setUpdated(true);
+
+      router.replace(`/admin/products/${id}`);
+    } else {
+      setError(response?.data?.message);
+    }
+  };
+
+  const deleteProduct = async (id) => {
+    const { data } = await axios.delete(
+      `${process.env.URL}/api/admin/products/${id}`
+    );
+    if (data) {
+      router.replace(`/admin/products`);
+    } else {
+      setError(response?.data?.message);
+    }
+  };
+
+  const uploadProductImages = async (formData, id) => {
+    console.log([...formData.entries()]);
+    setLoading(true);
+    const { data } = await axios.post(
+      `${process.env.URL}/api/admin/products/upload_images/${id}`,
+      formData
+      // {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      // }
+    );
+    if (data?.data) {
+      setLoading(false);
+      router.replace("/admin/products");
+    } else {
+      toast.error("ERROR!!");
+      setError(response?.data?.message);
+    }
+  };
+
+  const clearError = () => {
+    setError(null);
+  };
   return (
     <ProductContext.Provider
       value={{
@@ -35,6 +84,11 @@ export const ProductProvider = ({ children }) => {
         updated,
         error,
         newProduct,
+        uploadProductImages,
+        clearError,
+        updateProduct,
+        setUpdated,
+        deleteProduct,
       }}
     >
       {children}
