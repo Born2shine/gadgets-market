@@ -47,7 +47,7 @@ const UpdateProduct = ({ data }) => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    console.log(product);
+    
 
     updateProduct(product, data?._id);
   };

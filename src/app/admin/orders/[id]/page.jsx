@@ -6,10 +6,7 @@ import {cookies} from 'next/headers'
 
 
 const getOrder= async(id)=>{
-
-    const nextCookies = cookies();
-    
-    
+    const nextCookies = cookies();  
 
 
     const nextAuthSessionToken = nextCookies.get('next-auth.session-token')

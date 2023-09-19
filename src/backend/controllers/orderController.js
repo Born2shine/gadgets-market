@@ -37,6 +37,36 @@ export const getOrder = async (req, res, next) => {
   });
 };
 
+export const updateOrder = async (req, res, next) => {
+  let order = await Order.findById(req.query.id);
+  if (!order) {
+    return res.status(404).json({ message: "order not found" });
+  }
+
+  order = await Order.findByIdAndUpdate(req.query.id, {
+    orderStatus: req.body.orderStatus,
+  });
+  res.status(200).json({
+    success: true,
+    order,
+  });
+};
+
+export const deleteOrder = async (req, res, next) => {
+  let order = await Order.findById(req.query.id);
+
+  if (!order) {
+    return res.status(404).json({ message: "order not found" });
+  }
+
+  order = await Order.findByIdAndDelete(req.query.id);
+
+  res.status(200).json({
+    success: true,
+    message: "Order Deleted Sucessfully",
+  });
+};
+
 export const getAllOrders = async (req, res, next) => {
   const resPerPage = 2;
   const ordersCount = await Order.countDocuments();
