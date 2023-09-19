@@ -2,6 +2,7 @@ import getRawBody from "raw-body";
 import Stripe from "stripe";
 import Order from "@/backend/models/orderModel";
 import ApiFilters from "../utils/apiFilters";
+import Orders from "@/components/admin/Orders";
 
 const stripe = new Stripe(process.env.stripe_secret_key);
 
@@ -16,6 +17,37 @@ export const myOrders = async (req, res, next) => {
   const orders = await apiFilter.query
     .find({ user: req.user._id })
     .populate("shippingInfo user");
+
+  res.status(200).json({
+    ordersCount,
+    resPerPage,
+    orders,
+  });
+};
+
+export const getOrder = async (req, res, next) => {
+  const order = await Order.findById(req.query.id).populate(
+    "shippingInfo user"
+  );
+  if (!order) {
+    return res.status(404).json({ message: "order not found" });
+  }
+  res.status(200).json({
+    order,
+  });
+};
+
+export const getAllOrders = async (req, res, next) => {
+  const resPerPage = 2;
+  const ordersCount = await Order.countDocuments();
+
+  // const apiFilter = new ApiFilters(Order.find(), req.query).pagination(
+  //   resPerPage
+  // // );
+
+  // const orders = await apiFilter.query.find().populate("shippingInfo user");
+
+  const orders = await Order.find().populate("shippingInfo user");
 
   res.status(200).json({
     ordersCount,
@@ -88,8 +120,6 @@ async function getCartItem(line_items) {
 }
 
 export const webhook = async (req, res) => {
-
-
   try {
     const rawBody = await getRawBody(req);
     const signature = req.headers["stripe-signature"];
@@ -105,8 +135,6 @@ export const webhook = async (req, res) => {
       const line_items = await stripe.checkout.sessions.listLineItems(
         event.data.object.id
       );
-
-      
 
       const orderItems = await getCartItem(line_items);
 
@@ -126,8 +154,6 @@ export const webhook = async (req, res) => {
         paymentInfo,
         orderItems,
       };
-
-
 
       const order = await Order.create(orderData);
 

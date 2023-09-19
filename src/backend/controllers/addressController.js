@@ -1,5 +1,4 @@
 import Address from "../models/addressModel";
-import AppError from "../utils/errClass";
 
 export const newAddress = async (req, res) => {
   const { newAddress } = req.body;
@@ -20,7 +19,7 @@ export const getAddress = async (req, res, next) => {
   const address = await Address.findById(req.query.id);
 
   if (!address) {
-    return next(new AppError("Address not found", 404));
+    return res.status(404).json({ message: "order not found" });
   }
 
   res.status(200).json({ address });
@@ -30,7 +29,7 @@ export const updateAddress = async (req, res, next) => {
   let address = await Address.findById(req.query.id);
 
   if (!address) {
-    return next(new AppError("Address not found", 404));
+    return res.status(404).json({ message: "order not found" });
   }
 
   address = await Address.findByIdAndUpdate(
@@ -45,7 +44,7 @@ export const deleteAddress = async (req, res, next) => {
   const address = await Address.findByIdAndDelete(req.query.id);
 
   if (!address) {
-    return next(new AppError("Address not found", 404));
+    return res.status(404).json({ message: "order not found" });
   }
 
   res.status(200).json({

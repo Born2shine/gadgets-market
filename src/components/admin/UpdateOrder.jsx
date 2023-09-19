@@ -1,71 +1,68 @@
-import React from "react";
-import Sidebar from "../layout/Sidebar";
+'use client'
 
-const UpdateOrder = () => {
+import Image from "next/image";
+import React from "react";
+
+
+const UpdateOrder = ({order}) => {
   return (
-    <section className="py-10">
-      <div className="container max-w-screen-xl mx-auto px-4">
-        <div className="flex flex-col md:flex-row -mx-4">
-          <Sidebar />
-          <main className="md:w-2/3 lg:w-3/4 px-4">
+   
             <article className="p-3 lg:p-5 mb-5 bg-white border border-blue-600 rounded-md">
               <header className="lg:flex justify-between mb-4">
-                <div className="mb-4 lg:mb-0">
-                  <p className="font-semibold">
-                    <span>Order ID: 938759485 </span>
+        <div className="mb-4 lg:mb-0">
+          <p className="font-semibold">
+            <span>Order ID: {order._id} </span> {order?.orderStatus === 'Processing'?(<span className="text-red-500">•{order?.orderStatus?.toUpperCase()}</span>): (<span className="text-green-500">•{order?.orderStatus.toUpperCase()}</span>) }
+          </p>
+          <p className="text-gray-500">{order?.createdAt?.substring(0,10)} </p>
+        </div>
+      </header>
+      <div className="grid md:grid-cols-3 gap-2">
+        <div>
+          <p className="text-gray-400 mb-1">Person</p>
+          <ul className="text-gray-600">
+            <li>{order?.user?.name}</li>
+            <li>Phone: {order?.shippingInfo?.phoneNo}</li>
+            <li>Email: {order?.user?.email}</li>
+          </ul>
+        </div>
+        <div>
+          <p className="text-gray-400 mb-1">Delivery address</p>
+          <ul className="text-gray-600">
+            <li> {order?.shippingInfo?.street}</li>
+            <li> {order?.shippingInfo?.city},  {order?.shippingInfo?.state},  {order?.shippingInfo?.zipCode}</li>
+            <li> {order?.shippingInfo?.country}</li>
+          </ul>
+        </div>
+        <div>
+          <p className="text-gray-400 mb-1">Payment</p>
+          <ul className="text-gray-600">
+            <li className="text-green-400">{order?.paymentInfo?.status.toUppercase}</li>
+            <li>Tax paid: ${order?.paymentInfo?.taxPaid}</li>
+            <li>Total paid: ${order?.paymentInfo?.amountPaid}</li>
+          </ul>
+        </div>
+      </div>
 
-                    <span className="text-green-500"> • Delivered</span>
-                  </p>
-                  <p className="text-gray-500"> 2023-23-12 </p>
-                </div>
-              </header>
-              <div className="grid md:grid-cols-3 gap-2">
-                <div>
-                  <p className="text-gray-400 mb-1">Person</p>
-                  <ul className="text-gray-600">
-                    <li>Ghulam</li>
-                    <li>Phone: 12345667897</li>
-                    <li>Email: test@gmail.com</li>
-                  </ul>
-                </div>
-                <div>
-                  <p className="text-gray-400 mb-1">Delivery address</p>
-                  <ul className="text-gray-600">
-                    <li>124 street</li>
-                    <li>Orlando, FL, 12345</li>
-                    <li>US</li>
-                  </ul>
-                </div>
-                <div>
-                  <p className="text-gray-400 mb-1">Payment</p>
-                  <ul className="text-gray-600">
-                    <li className="text-green-400">PAID</li>
-                    <li>Tax paid: $12</li>
-                    <li>Total paid: $34</li>
-                  </ul>
-                </div>
-              </div>
+      <hr className="my-4" />
 
-              <hr className="my-4" />
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+        {order?.orderItems?.map((orderItem)=>
+        (
+        <figure className="flex flex-row mb-4" key={orderItem}>
+          <div>
+            <div className="block w-20 h-20 rounded border border-gray-200 overflow-hidden p-3">
+              <Image src={orderItem.image} height="60" width="60" alt={orderItem.image} />
+            </div>
+          </div>
+          <figcaption className="ml-3">
+            <p>{orderItem.name.substring(0, 35)}</p>
+            <p className="mt-1 font-semibold">{orderItem.quantity} = ${orderItem.price * orderItem.quantity}</p>
+          </figcaption>
+        </figure>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
-                <figure className="flex flex-row mb-4">
-                  <div>
-                    <div className="block w-20 h-20 rounded border border-gray-200 overflow-hidden p-3">
-                      <img
-                        src={"/logo192.png"}
-                        height="60"
-                        width="60"
-                        alt="Title"
-                      />
-                    </div>
-                  </div>
-                  <figcaption className="ml-3">
-                    <p>Product 1</p>
-                    <p className="mt-1 font-semibold">2x = $23</p>
-                  </figcaption>
-                </figure>
-              </div>
+        )
+        )}
+      </div>
 
               <hr />
 
@@ -103,10 +100,7 @@ const UpdateOrder = () => {
                 Update
               </button>
             </article>
-          </main>
-        </div>
-      </div>
-    </section>
+         
   );
 };
 
