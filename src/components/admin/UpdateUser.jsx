@@ -1,19 +1,50 @@
-import React from "react";
-import Sidebar from "../layout/Sidebar";
+'use client'
 
-const UpdateUser = () => {
+import AuthContext from "@/context/authContext";
+import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+
+
+
+
+const UpdateUser = ({user}) => {
+  const{error, clearError, loading, adminUpdateUser, updated, setUpdated} = useContext(AuthContext)
+
+  const[email, setEmail] = useState(user?.email)
+  const[name, setName] = useState(user?.name)
+  const[role, setRole] = useState(user?.role)
+
+  useEffect(() => {
+    if (updated) {
+      toast.success("User Updated");
+      setUpdated(false);
+    }
+    if (error) {
+      toast.error(error);
+      clearError();
+    }
+  }, [error, updated]);
+
+  const submitHandler =(e)=>{
+    e.preventDefault();
+
+    const userData = {
+      name,
+      email,
+      role
+    }
+
+    adminUpdateUser(userData, user?._id)
+  }
+  
   return (
     <>
-      <section className="py-10">
-        <div className="container max-w-screen-xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row -mx-4">
-            <Sidebar />
-            <main className="md:w-2/3 lg:w-3/4 px-4">
+     
               <div
                 style={{ maxWidth: "480px" }}
                 className="mt-1 mb-20 p-4 md:p-7 mx-auto rounded bg-white"
               >
-                <form>
+                <form onSubmit={submitHandler}>
                   <h2 className="mb-5 text-2xl font-semibold">Update User</h2>
 
                   <div className="mb-4">
@@ -22,6 +53,8 @@ const UpdateUser = () => {
                       className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
                       type="text"
                       placeholder="Type your name"
+                      value={name}
+                      onChange={(e)=>setName(e.target.value)}
                       required
                     />
                   </div>
@@ -32,6 +65,8 @@ const UpdateUser = () => {
                       className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
                       type="text"
                       placeholder="Type your email"
+                      value={email}
+                      onChange={(e)=>setEmail(e.target.value)}
                       required
                     />
                   </div>
@@ -42,6 +77,8 @@ const UpdateUser = () => {
                       <select
                         class="block appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
                         name="category"
+                        value={role}
+                        onChange={(e)=>setRole(e.target.value)}
                         required
                       >
                         {["user", "admin"].map((role) => (
@@ -71,10 +108,7 @@ const UpdateUser = () => {
                   </button>
                 </form>
               </div>
-            </main>
-          </div>
-        </div>
-      </section>
+           
     </>
   );
 };

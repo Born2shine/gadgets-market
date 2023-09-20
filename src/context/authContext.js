@@ -81,6 +81,32 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const adminUpdateUser = async (userData, id) => {
+    const { data } = await axios.put(
+      `${process.env.URL}/api/admin/users/${id}`,
+      userData
+    );
+    if (data?.success) {
+      setUpdated(true);
+      toast.success("update Successful!!");
+      router.replace("/admin/users");
+    } else {
+      setError(response?.data?.message);
+    }
+  };
+
+  const admindeleteUser = async (id) => {
+    const { data } = await axios.delete(
+      `${process.env.URL}/api/admin/users/${id}`
+    );
+    if (data?.success) {
+      toast.success(data?.message);
+      router.replace("/admin/users");
+    } else {
+      setError(response?.data?.message);
+    }
+  };
+
   const addNewAddress = async (newAddress) => {
     try {
       const { data } = await axios.post(`${process.env.URL}/api/address`, {
@@ -154,6 +180,8 @@ export const AuthProvider = ({ children }) => {
         updatePassword,
         setUpdated,
         deleteAddress,
+        admindeleteUser,
+        adminUpdateUser,
       }}
     >
       {children}
