@@ -17,3 +17,15 @@ export const parseCallbackUrl = (url) => {
 
   return res;
 };
+
+export const getUserReview = (reviews, userId) => {
+  let userReview = null;
+
+  reviews.forEach((review) => {
+    if (review?.user?._id === userId) {
+      userReview = review;
+    }
+  });
+
+  return userReview;
+};

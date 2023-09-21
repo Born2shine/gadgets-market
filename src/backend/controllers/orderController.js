@@ -203,3 +203,17 @@ export const webhook = async (req, res) => {
 //     orders,
 //   });
 // };
+
+export const canReview = async (req, res, next) => {
+  const productId = req.query.productId;
+  const orders = await Order.find({
+    user: req.user?._id,
+    " orderItems.product": productId,
+  });
+
+  let canReview = orders?.length >= 1 ? "true" : "false";
+
+  res.status(200).json({
+    canReview,
+  });
+};

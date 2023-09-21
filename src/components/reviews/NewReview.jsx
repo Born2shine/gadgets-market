@@ -1,7 +1,43 @@
-import React from "react";
-import StarRatings from "react-star-ratings";
+'use client'
 
-const NewReview = () => {
+import AuthContext from "@/context/authContext";
+import ProductContext from "@/context/productContext";
+import { getUserReview } from "@/helpers/helpers";
+import React, { useContext, useEffect, useState } from "react";
+import StarRatings from "react-star-ratings";
+import { toast } from "react-toastify";
+
+const NewReview = ({product}) => {
+  const[rating, setRating]= useState(0)
+  const[comment, setComment]= useState("")
+
+  const {user} = useContext(AuthContext)
+  const{error, clearError, postProductReview} = useContext(ProductContext)
+  const submitHandler =()=>{
+    const reviewData = {
+      rating,
+      comment,
+      productId: product?._id
+    }
+
+    postProductReview(reviewData)
+  }
+
+  useEffect(()=>{
+    const userReview = getUserReview(product?.reviews, user?._id)
+
+    if(userReview){
+    setRating(userReview?.rating)
+    setComment(userReview?.comment)
+    }
+
+    if(error){
+      toast.error(error)
+      clearError()
+    }
+  }, [error, user])
+
+
   return (
     <div>
       <hr className="my-4" />
@@ -11,10 +47,11 @@ const NewReview = () => {
       <div className="mb-4 mt-3">
         <div className="ratings">
           <StarRatings
-            rating={5}
+            rating={rating}
             starRatedColor="#ffb829"
             numberOfStars={5}
             name="rating"
+            changeRating={(e)=>setRating(e)}
           />
         </div>
       </div>
@@ -25,11 +62,13 @@ const NewReview = () => {
           className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-1/3"
           placeholder="Your review"
           name="description"
+          value={comment}
+          onChange={(e)=>setComment(e.target.value)}
           required
         ></textarea>
       </div>
 
-      <button className="mt-3 mb-5 px-4 py-2 text-center inline-block text-white bg-yellow-500 border border-transparent rounded-md hover:bg-yellow-600 w-1/3">
+      <button className="mt-3 mb-5 px-4 py-2 text-center inline-block text-white bg-yellow-500 border border-transparent rounded-md hover:bg-yellow-600 w-1/3" onClick={()=>submitHandler()}>
         Post Review
       </button>
     </div>

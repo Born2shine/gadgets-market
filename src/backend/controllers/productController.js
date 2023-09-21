@@ -56,7 +56,7 @@ export const uploadProductImages = async (req, res, next) => {
 
   if (!product) {
     res.status(404).json({
-      error: "product not found",
+      message: "product not found",
     });
   }
 
@@ -85,7 +85,7 @@ export const updateProduct = async (req, res, next) => {
 
   if (!product) {
     res.status(404).json({
-      error: "product not found",
+      message: "product not found",
     });
   }
 
@@ -99,7 +99,7 @@ export const deleteProduct = async (req, res, next) => {
 
   if (!product) {
     res.status(404).json({
-      error: "product not found",
+      message: "product not found",
     });
   }
   // Deketing the corresponding images for the product
@@ -125,12 +125,12 @@ export const createProductReview = async (req, res, next) => {
 
   if (!product) {
     res.status(404).json({
-      error: "product not found",
+      message: "product not found",
     });
   }
 
   const isReview = product?.reviews?.find(
-    (r) => r.user.toString() === req.user._id.toString()
+    (r) => r.user?.toString() === req.user._id.toString()
   );
 
   if (isReview) {
@@ -144,8 +144,10 @@ export const createProductReview = async (req, res, next) => {
     product?.reviews?.push(review);
   }
 
-product?.ratings = product?.reviews.reduce((acc, item)=> item.rating + acc, 0)/product.reviews.length 
+  product.ratings =
+    product?.reviews?.reduce((acc, item) => item.rating + acc, 0) /
+    product?.reviews.length;
 
-await product?.save()
+  await product?.save();
   res.status(200).json({ success: true });
 };

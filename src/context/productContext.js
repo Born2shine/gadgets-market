@@ -69,8 +69,22 @@ export const ProductProvider = ({ children }) => {
       setLoading(false);
       router.replace("/admin/products");
     } else {
-      toast.error("ERROR!!");
       setError(response?.data?.message);
+    }
+  };
+
+  const postProductReview = async (reviewData) => {
+    try {
+      const { data } = await axios.put(
+        `${process.env.URL}/api/products/review`,
+        reviewData
+      );
+      if (data?.success) {
+        router.replace(`/product/${reviewData?.productId}`);
+      }
+    } catch (error) {
+      setError(error.response?.data?.message);
+      console.log(error);
     }
   };
 
@@ -89,6 +103,7 @@ export const ProductProvider = ({ children }) => {
         updateProduct,
         setUpdated,
         deleteProduct,
+        postProductReview,
       }}
     >
       {children}

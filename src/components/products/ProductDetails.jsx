@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import StarRatings from "react-star-ratings";
 import BreadCrumbs from "../layout/BreadCrumbs";
 import NewReview from "../reviews/NewReview";
@@ -8,16 +8,24 @@ import Reviews from "../reviews/Reviews";
 import Image from "next/image";
 import { useRef } from "react";
 import CartContext from "@/context/cardContext"
+import OrderContext from "@/context/orderContext";
 
 const ProductDetails = ({product}) => {
   
 const {addItemToCart} = useContext(CartContext)
+const{canUserReview, canReview} = useContext(OrderContext)
 
   const imageRef = useRef(null)
   const setImgPreview = (url)=>{
       imageRef.current.src= url;
   } 
   const inStock= product?.stock >= 1
+
+
+useEffect(()=>{
+  canUserReview(product?._id) 
+  console.log(canReview)
+})
 
   const addToCartHandler = ()=>{
     addItemToCart({
@@ -131,14 +139,14 @@ const {addItemToCart} = useContext(CartContext)
             </main>
           </div>
 
-          <NewReview />
+          {!canReview && <NewReview product={product}/>}
           <hr />
 
           <div className="font-semibold">
             <h1 className="text-gray-500 review-title mb-6 mt-10 text-2xl">
               Other Customers Reviews
             </h1>
-            <Reviews />
+            <Reviews reviews={product?.reviews}/>
           </div>
         </div>
       </section>
