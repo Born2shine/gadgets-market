@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
       );
       if (data) {
         toast.success("SignUp Successful!!");
-        router.push("/");
+        router.replace("/");
       }
     } catch (error) {
       setError(error?.response?.data?.message);

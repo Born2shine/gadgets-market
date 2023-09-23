@@ -6,8 +6,12 @@ module.exports = (err, req, res, next) => {
   error.statusCode = err.statusCode || 500;
   error.message = err.message || "internal Server Error";
 
-  if (err.name === "validationError") {
-    const message = Object.values(err.errors).map((value) => value.message);
+  if (err._message.includes("validation")) {
+    // const validationErrors = Object.values(err.errors).map(
+    //   (value) => value.message
+    // );
+    // const message = `${validationErrors.join(". ")} `;
+    let message = Object.values(err.errors);
     error = new AppError(message, 400);
   }
 
@@ -26,7 +30,7 @@ module.exports = (err, req, res, next) => {
   res.status(error.statusCode).json({
     success: false,
     error,
-    message: error.message,
-    stack: error.stack,
+    // message: error.message,
+    // stack: error.stack,
   });
 };

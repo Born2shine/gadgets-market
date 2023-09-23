@@ -20,6 +20,7 @@ const callBackUrl = params.get('callbackUrl');
 
 
 
+//THE SIGNIN SUBMIT HANDLER
   
   const submitHandler = async(e)=>{
       e.preventDefault();
@@ -27,20 +28,16 @@ const callBackUrl = params.get('callbackUrl');
     const data= await signIn('credentials', {
       email,
       password,
-      callbackUrl:  callBackUrl ? parseCallbackUrl(callBackUrl): "/"
-    })
+      redirect: false
 
-    
-    
+      // callbackUrl:  callBackUrl ? parseCallbackUrl(callBackUrl): "/"
+    })
    
     if (data?.error){
-      console.log(data?.error)
-      
-        // toast.error(data?.error)
+        toast.error(data?.error)
     }
 
-    if(data?.ok){
-      console.log(data)
+    if(data?.ok){      
       toast.success('LOGIN SUCCESFUL!')
       router.push('/')
     }      
@@ -52,7 +49,7 @@ const callBackUrl = params.get('callbackUrl');
       style={{ maxWidth: "480px" }}
       className="mt-10 mb-20 p-4 md:p-7 mx-auto rounded bg-white shadow-lg"
     >
-      <form >
+      <form onSubmit={submitHandler}>
         <h2 className="mb-5 text-2xl font-semibold">Login</h2>
 
         <div className="mb-4">
@@ -82,7 +79,7 @@ const callBackUrl = params.get('callbackUrl');
 
         <button
           type="submit"
-          className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"  onClick={submitHandler}
+          className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"  
         >
           Login
         </button>
