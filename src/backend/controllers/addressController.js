@@ -19,7 +19,7 @@ export const getAddress = async (req, res, next) => {
   const address = await Address.findById(req.query.id);
 
   if (!address) {
-    return res.status(404).json({ message: "order not found" });
+    return res.status(404).json({ message: "Address not found" });
   }
 
   res.status(200).json({ address });
@@ -29,7 +29,7 @@ export const updateAddress = async (req, res, next) => {
   let address = await Address.findById(req.query.id);
 
   if (!address) {
-    return res.status(404).json({ message: "order not found" });
+    return res.status(404).json({ message: "Address not found" });
   }
 
   address = await Address.findByIdAndUpdate(
@@ -44,7 +44,7 @@ export const deleteAddress = async (req, res, next) => {
   const address = await Address.findByIdAndDelete(req.query.id);
 
   if (!address) {
-    return res.status(404).json({ message: "order not found" });
+    return res.status(404).json({ message: "Address not found" });
   }
 
   res.status(200).json({
@@ -54,7 +54,7 @@ export const deleteAddress = async (req, res, next) => {
 };
 
 export const deleteAllAddress = async (req, res) => {
-  const addresses = await Address.deleteMany();
+  await Address.deleteMany();
 
   res.status(200).json({ message: "deleted Succesfully!" });
 };

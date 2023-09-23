@@ -1,22 +1,13 @@
-// import { NextResponse } from "next/server";
-// import next from "next/types";
 import Product from "../models/product";
-
 import ApiFilters from "../utils/apiFilters";
 import { cloudinary, uploads } from "../utils/cloudnary";
 import fs from "fs";
-// export const createAllProducts = async (req, res, next) => {
-//   const products = await Product.create(product);
-
-//   res.status(201).json({ products });
-// };
 
 export const newProduct = async (req, res, next) => {
   req.body.user = req.user?._id;
 
   const newProduct = await Product.create(req.body);
 
-  // return NextResponse.json({ newProduct });
   res.status(201).json({ newProduct });
 };
 
@@ -34,7 +25,6 @@ export const getAllProducts = async (req, res, next) => {
 
   products = await filter.query.clone();
 
-  // return NextResponse.json({ products });
   res.status(200).json({
     products,
     resPerPage,
@@ -46,12 +36,11 @@ export const getAllProducts = async (req, res, next) => {
 export const getProduct = async (req, res, next) => {
   const product = await Product.findById(req.query.id);
 
-  // return NextResponse.json({ products });
   res.status(200).json({ product });
 };
 
 export const uploadProductImages = async (req, res, next) => {
-  console.log("files========>", req.files);
+  //CHECK IF THE PRODUCT EXISTS AND SEND A CORRESPONDING MESSAGE IF NOT FOUND
   let product = await Product.findById(req.query.id);
 
   if (!product) {
@@ -60,6 +49,7 @@ export const uploadProductImages = async (req, res, next) => {
     });
   }
 
+  // CALL THE CLOUDINARY-UPLOAD FUNCTION AND PASS THE PATH OF THE FILE AND THE CORRESPONDING FOLDER IN THE CLOUDINARY SERVER
   const uploader = async (path) => await uploads(path, "egadgetsApp/products");
 
   const urls = [];
@@ -70,6 +60,8 @@ export const uploadProductImages = async (req, res, next) => {
     const { path } = file;
     const imgURL = await uploader(path);
     urls.push(imgURL);
+
+    //DELETE THE THE FILE FROM THE FILE SYSTEM
     fs.unlinkSync(path);
   }
   console.log(urls);
@@ -81,6 +73,7 @@ export const uploadProductImages = async (req, res, next) => {
 };
 
 export const updateProduct = async (req, res, next) => {
+  //CHECK IF THE PRODUCT EXISTS AND SEND A CORRESPONDING MESSAGE IF NOT FOUND
   let product = await Product.findById(req.query.id);
 
   if (!product) {
@@ -95,6 +88,7 @@ export const updateProduct = async (req, res, next) => {
 };
 
 export const deleteProduct = async (req, res, next) => {
+  //CHECK IF THE PRODUCT EXISTS AND SEND A CORRESPONDING MESSAGE IF NOT FOUND
   let product = await Product.findById(req.query.id);
 
   if (!product) {
@@ -102,7 +96,7 @@ export const deleteProduct = async (req, res, next) => {
       message: "product not found",
     });
   }
-  // Deketing the corresponding images for the product
+  // Deleting the corresponding images for the product
   for (let i = 0; i < product.images?.length; i++) {
     const res = await cloudinary.v2.uploader.destroy(
       product.images[i].public_id
@@ -115,12 +109,15 @@ export const deleteProduct = async (req, res, next) => {
 };
 
 export const createProductReview = async (req, res, next) => {
+  // GET THE REVIEWS FROM THE REQ.BODY OBJECT
   const { rating, comment, productId } = req.body;
   const review = {
     user: req.user?._id,
     rating: Number(rating),
     comment,
   };
+
+  //CHECK IF THE PRODUCT EXISTS AND SEND A CORRESPONDING MESSAGE IF NOT FOUND
   let product = await Product.findById(productId);
 
   if (!product) {
@@ -129,6 +126,7 @@ export const createProductReview = async (req, res, next) => {
     });
   }
 
+  //CHECK IF THE USER ALREADY HAS A REVIEW, IF YES, YOU UPDATE THE REVIEW, ELSE YOU PUSH THE REVIEW OBJECT GOTTEN FROM THE FRONTEND TO THE REVIEW ARRAY
   const isReview = product?.reviews?.find(
     (r) => r.user?.toString() === req.user._id.toString()
   );
@@ -144,6 +142,7 @@ export const createProductReview = async (req, res, next) => {
     product?.reviews?.push(review);
   }
 
+  // CALCULATE THE RATINGS, AND SAVE
   product.ratings =
     product?.reviews?.reduce((acc, item) => item.rating + acc, 0) /
     product?.reviews.length;

@@ -16,15 +16,16 @@ export const ProductProvider = ({ children }) => {
   const router = useRouter();
 
   const newProduct = async (product) => {
-    const { data } = await axios.post(
-      `${process.env.URL}/api/admin/products`,
-      product
-    );
-    if (data) {
-      router.replace("/admin/products");
-    } else {
-      toast.error("ERROR!!");
-      setError(response?.data?.message);
+    try {
+      const { data } = await axios.post(
+        `${process.env.URL}/api/admin/products`,
+        product
+      );
+      if (data) {
+        router.replace("/admin/products");
+      }
+    } catch (error) {
+      setError(error.response?.data?.message);
     }
   };
 

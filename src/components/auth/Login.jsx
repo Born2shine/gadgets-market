@@ -35,7 +35,8 @@ const callBackUrl = params.get('callbackUrl');
    
     if (data?.error){
       console.log(data?.error)
-      toast.error(data?.error)
+      
+        // toast.error(data?.error)
     }
 
     if(data?.ok){

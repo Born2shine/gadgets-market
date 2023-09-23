@@ -33,6 +33,7 @@ export const getOrder = async (req, res, next) => {
     return res.status(404).json({ message: "order not found" });
   }
   res.status(200).json({
+    success: true,
     order,
   });
 };
@@ -158,7 +159,7 @@ export const webhook = async (req, res) => {
       signature,
       process.env.stripe_webhook_secret
     );
-    // console.log("events---------------->", event);
+
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
 
@@ -195,14 +196,6 @@ export const webhook = async (req, res) => {
     console.log(err);
   }
 };
-
-// export const getAllOrder = async (req, res) => {
-//   const orders = await Order.find();
-
-//   res.status(200).json({
-//     orders,
-//   });
-// };
 
 export const canReview = async (req, res, next) => {
   const productId = req.query.productId;

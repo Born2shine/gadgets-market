@@ -139,7 +139,7 @@ useEffect(()=>{
             </main>
           </div>
 
-          {!canReview && <NewReview product={product}/>}
+          {canReview && <NewReview product={product}/>}
           <hr />
 
           <div className="font-semibold">

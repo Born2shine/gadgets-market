@@ -16,17 +16,21 @@ export const AuthProvider = ({ children }) => {
   const router = useRouter();
 
   const registerUser = async ({ name, email, password }) => {
-    const { data } = await axios.post(`${process.env.URL}/api/auth/register`, {
-      name,
-      email,
-      password,
-    });
-    if (data) {
-      toast.success("SignUp Successful!!");
-      router.push("/");
-    } else {
-      toast.error("ERROR!!");
-      setError(response?.data?.message);
+    try {
+      const { data } = await axios.post(
+        `${process.env.URL}/api/auth/register`,
+        {
+          name,
+          email,
+          password,
+        }
+      );
+      if (data) {
+        toast.success("SignUp Successful!!");
+        router.push("/");
+      }
+    } catch (error) {
+      setError(error?.response?.data?.message);
     }
   };
 
@@ -61,9 +65,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
       loadUser();
     } else {
-      toast.error("ERROR!!");
       setLoading(false);
-      console.log(response?.data);
       setError(response?.data?.message);
     }
   };
@@ -82,7 +84,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const adminUpdateUser = async (userData, id) => {
-    console.log(id);
     const { data } = await axios.put(
       `${process.env.URL}/api/admin/users/${id}`,
       userData
@@ -96,14 +97,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   const adminDeleteUser = async (id) => {
-    const { data } = await axios.delete(
-      `${process.env.URL}/api/admin/users/${id}`
-    );
-    if (data?.success) {
-      toast.success(data?.message);
-      router.push("/admin/users");
-    } else {
-      setError(response?.data?.message);
+    try {
+      const { data } = await axios.delete(
+        `${process.env.URL}/api/admin/users/${id}`
+      );
+      if (data?.success) {
+        toast.success(data?.message);
+        router.push("/admin/users");
+      }
+    } catch (error) {
+      setError(error?.response?.data?.message);
     }
   };
 
@@ -111,19 +114,13 @@ export const AuthProvider = ({ children }) => {
     try {
       const { data } = await axios.post(`${process.env.URL}/api/address`, {
         newAddress,
-        // headers: {
-        //   Cookie: `next-auth.session-token=${cookiesToken?.value}`,
-        // },
-        // withCredentials: true,
       });
 
       if (data) {
         router.push("/me");
       }
-    } catch (err) {
-      console.log(err?.response?.data?.message);
-
-      setError(err?.response?.data?.message);
+    } catch (error) {
+      setError(error?.response?.data?.message);
     }
   };
 
@@ -137,15 +134,9 @@ export const AuthProvider = ({ children }) => {
         setUpdated(true);
         router.replace(`/address/${id}`);
       }
-    } catch (err) {
-      console.log(err?.response?.data?.message);
-
-      setError(err?.response?.data?.message);
+    } catch (error) {
+      setError(error?.response?.data?.message);
     }
-  };
-
-  const clearError = () => {
-    setError(null);
   };
 
   const deleteAddress = async (id) => {
@@ -157,11 +148,13 @@ export const AuthProvider = ({ children }) => {
       if (data) {
         router.push(`/me`);
       }
-    } catch (err) {
-      console.log(err?.response?.data?.message);
-
-      setError(err?.response?.data?.message);
+    } catch (error) {
+      setError(error?.response?.data?.message);
     }
+  };
+
+  const clearError = () => {
+    setError(null);
   };
 
   return (

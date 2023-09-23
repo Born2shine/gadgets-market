@@ -19,6 +19,7 @@ export const getAllUsers = async (req, res, next) => {
 };
 
 export const getUser = async (req, res, next) => {
+  //CHECK IF THE USER EXISTS AND SEND A CORRESPONDING MESSAGE IF NOT FOUND, THEN SEND THE USER BACK TO THE FRONTEND
   const user = await User.findById(req.query.id);
   if (!user) {
     return res.status(404).json({ message: "User not found" });
@@ -30,11 +31,12 @@ export const getUser = async (req, res, next) => {
 };
 
 export const updateUser = async (req, res, next) => {
+  //CHECK IF THE USER EXISTS AND SEND A CORRESPONDING MESSAGE IF NOT FOUND
   let user = await User.findById(req.query.id);
   if (!user) {
     return res.status(404).json({ message: "user not found" });
   }
-  console.log(req.body);
+
   user = await User.findByIdAndUpdate(req.query.id, req.body);
   res.status(200).json({
     success: true,
@@ -43,6 +45,7 @@ export const updateUser = async (req, res, next) => {
 };
 
 export const deleteUser = async (req, res, next) => {
+  //CHECK IF THE USER EXISTS AND SEND A CORRESPONDING MESSAGE IF NOT FOUND
   let user = await User.findById(req.query.id);
 
   if (!user) {
