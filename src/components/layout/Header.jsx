@@ -9,6 +9,7 @@ import CartContext from "@/context/cardContext";
 import {useSession} from "next-auth/react";
 import AuthContext from "@/context/authContext";
 
+
 const Header = () => {
 
   const {user, setUser} = useContext(AuthContext)
@@ -21,16 +22,17 @@ useEffect(()=>{
 
   const {addItemToCart, cart} = useContext(CartContext)
   return (
-    <header className="bg-white py-2 border-b">
+    <header className="bg-gradient-to-r from-green-50 via-blue-200 to-blue-50 py-2 border-b header">
       <div className="container max-w-screen-xl mx-auto px-4">
         <div className="flex flex-wrap items-center">
-          <div className="flex-shrink-0 mr-5">
+          <div className="flex-shrink-0 mr-5 mix-blend-darken">
             <a href="/">
               <Image
-                src="/images/logo.png"
+                src="/images/logo.jpg"
                 height="40"
                 width="120"
                 alt="BuyNow"
+                
               />
             </a>
           </div>

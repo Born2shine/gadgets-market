@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { CookiesProvider } from 'react-cookie';
 import { ProductProvider } from "@/context/productContext";
 import { OrderProvider } from "@/context/orderContext";
+import { IconContext } from "react-icons";
 
 
 export function GlobalProvider({ children }) {
@@ -15,7 +16,7 @@ export function GlobalProvider({ children }) {
     <>
     <ToastContainer position="top-center" autoClose={5000}
 hideProgressBar={true}/>
-<CookiesProvider defaultSetCookies={{ path: '/' }}>
+<IconContext.Provider value={{ className: 'react-icons' }}>
     <AuthProvider>
       <CartProvider>
         <OrderProvider>
@@ -27,7 +28,7 @@ hideProgressBar={true}/>
           </OrderProvider>
       </CartProvider>
      </AuthProvider>
-     </CookiesProvider>
+     </IconContext.Provider>    
      </>
   )
 }

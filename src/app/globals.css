@@ -2,3 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+.react-icons {
+    vertical-align: middle;
+  }
+
+.btn, .btn:active{
+  transform: scale(1.0);
+  transition: all .3s ease-in-out;
+}
+
+.btn:hover{
+ transform: scale(1.3);
+}
+

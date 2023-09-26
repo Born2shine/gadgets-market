@@ -4,8 +4,8 @@ import fs from "fs";
 import bcrypt from "bcryptjs";
 
 export const registerUser = async (req, res, next) => {
-  const { name, email, password, role } = req.body;
-  const newUser = await User.create({ name, email, password, role });
+  const { name, email, password } = req.body;
+  const newUser = await User.create({ name, email, password });
 
   // return NextResponse.json({ newProduct });
   res.status(201).json({ newUser });

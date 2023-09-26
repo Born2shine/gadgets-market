@@ -26,8 +26,10 @@ export const AuthProvider = ({ children }) => {
         }
       );
       if (data) {
-        toast.success("SignUp Successful!!");
-        router.replace("/");
+        toast.success(
+          "SignUp Successful!! please wait while you are redirected to login page"
+        );
+        router.replace("/login");
       }
     } catch (error) {
       setError(error?.response?.data?.message);
