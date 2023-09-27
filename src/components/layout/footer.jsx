@@ -11,7 +11,7 @@ const Footer = () => {
     <div className="bg-gradient-to-b from-green-50 via-blue-200 to-blue-700  text-white md: tx-lg text-center">
       <div className="footer-action flex justify-center items-center gap-2 p-2 ">
         <Image width={100} height={30} src="/images/logo.jpg" alt="logo" className="mix-blend-darken"/>
-        {!user && <button className="bg-gradient-to-br from-green-500 via-purple-500 to-green-700 rounded-tl-2xl rounded-br-2xl">
+        {!user && <button className="bg-gradient-to-br from-green-500 via-blue-500 to-green-700 rounded-tl-2xl rounded-br-2xl">
           <Link href={"/register"} className="rounded-lg py-4 px-6 flex justify-items-center items-center gap-2  ">
             <span className="uppercase font-bold text-lg md:text-2xl"> Sign UP</span>
             <i><FaRightLong/></i>

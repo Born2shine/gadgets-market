@@ -29,7 +29,7 @@ const Register = () => {
   return (
     <div
       style={{ maxWidth: "480px" }}
-      className="mt-10 mb-20 p-4 md:p-7 mx-auto rounded bg-white shadow-lg"
+      className="mt-10 mb-20 p-4 md:p-7 mx-auto rounded bg-gray-50 shadow-lg"
     >
       <form onSubmit={submitHandler}>
         <h2 className="mb-5 text-2xl font-semibold">Register Account</h2>

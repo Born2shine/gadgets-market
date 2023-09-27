@@ -8,7 +8,7 @@ import Image from "next/image";
 import CartContext from "@/context/cardContext";
 import {useSession} from "next-auth/react";
 import AuthContext from "@/context/authContext";
-import { FaCartShopping } from "react-icons/fa6"
+import { FaCartShopping, FaShareFromSquare } from "react-icons/fa6"
 
 
 
@@ -54,10 +54,10 @@ useEffect(()=>{
             {!user? (
             <Link
               href="/login"
-              className="px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300"
+              className="px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300 flex items-center"
             >
-              <i className="text-gray-400 w-5 fa fa-user"></i>
-              <span className="hidden lg:inline ml-1">Sign in</span>
+              <FaShareFromSquare/>
+              <span className="ml-1">Sign in</span>
             </Link>
             ) : (
             <Link href="/me">
