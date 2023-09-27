@@ -22,7 +22,7 @@ const ProductItem = ({product}) => {
   }
     return ( 
        
-        <article className="border border-gray-200 overflow-hidden bg-white shadow-sm rounded mb-5">
+        <article className="border border-gray-200 overflow-hidden bg-gradient-to-br from-white via-gray-50 to-gray-100 text-gray-600 shadow-lg rounded mb-5 lg:hover:shadow-xl">
            
                 <div className="flex flex-col md:flex-row">
                   <div className="md:w-1/4 flex p-3">
@@ -43,7 +43,7 @@ const ProductItem = ({product}) => {
                   </div>
                   <div className="md:w-2/4">
                     <div className="p-4">
-                      <Link href={`/product/${product?._id}`} className="hover:text-blue-600">
+                      <Link href={`/product/${product?._id}`} className="hover:text-blue-600 text-black">
                        {product?.name}
                       </Link>
                       <div className="flex flex-wrap items-center space-x-2 mb-2">
@@ -59,7 +59,7 @@ const ProductItem = ({product}) => {
                             />
                           </div>
                         </div>
-                        <b className="text-gray-300">•</b>
+                        <b className="text-gray-400">•</b>
                         <span className="ml-1 text-yellow-500">{product?.ratings}</span>
                       </div>
                       <p className="text-gray-500 mb-2">

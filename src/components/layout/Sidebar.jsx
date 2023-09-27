@@ -15,7 +15,7 @@ const logoutHandler =()=>{
 }
 
   return (
-    <aside className="md:w-1/3 lg:w-1/4 px-4">
+    <aside className="md:w-1/3 lg:w-1/4 px-4 border-r-1 border-gray-200 bg-gray-50 rounded shadow opacity-200">
       <ul className="sidebar">
         {user?.role==="admin" && (
         <>
