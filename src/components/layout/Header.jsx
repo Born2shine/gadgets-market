@@ -8,6 +8,8 @@ import Image from "next/image";
 import CartContext from "@/context/cardContext";
 import {useSession} from "next-auth/react";
 import AuthContext from "@/context/authContext";
+import { FaCartShopping } from "react-icons/fa6"
+
 
 
 const Header = () => {
@@ -38,15 +40,16 @@ useEffect(()=>{
           </div>
           <Search />
 
-          <div className="flex items-center space-x-2 ml-auto">
+          <div className="flex items-center space-x-2 ml-auto ">
             <Link
               href="/cart"
-              className="px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300"
+              className="px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300 flex items-center relative"
             >
-              <i className="text-gray-400 w-5 fa fa-shopping-cart"></i>
+              <i className="text-black w-5"><FaCartShopping/></i>
               <span className="hidden lg:inline ml-1">
-                Cart (<b>{ cart?.cartItems? cart?.cartItems?.length : 0}</b>)
+                Cart 
               </span>
+              <b className="absolute -top-1 right-0 bg-pink-600 text-white text-sm overflow-hidden rounded-xl px-1">{ cart?.cartItems? cart?.cartItems?.length : 0}</b>
             </Link>
             {!user? (
             <Link
@@ -73,7 +76,7 @@ useEffect(()=>{
               </Link>
             )}           
           </div>
-          <div className="lg:hidden ml-2">
+          {/* <div className="lg:hidden ml-2">
             <button
               type="button"
               className="bg-white p-3 inline-flex items-center rounded-md text-black hover:bg-gray-200 hover:text-gray-800 border border-transparent"
@@ -81,7 +84,7 @@ useEffect(()=>{
               <span className="sr-only">Open menu</span>
               <i className="fa fa-bars fa-lg"></i>
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </header>
