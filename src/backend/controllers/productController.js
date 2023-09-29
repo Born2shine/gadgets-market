@@ -40,7 +40,8 @@ export const getProduct = async (req, res, next) => {
 };
 
 export const uploadProductImages = async (req, res, next) => {
-  //CHECK IF THE PRODUCT EXISTS AND SEND A CORRESPONDING MESSAGE IF NOT FOUND
+  console.log(req.file);
+  // CHECK IF THE PRODUCT EXISTS AND SEND A CORRESPONDING MESSAGE IF NOT FOUND
   let product = await Product.findById(req.query.id);
 
   if (!product) {
@@ -49,27 +50,53 @@ export const uploadProductImages = async (req, res, next) => {
     });
   }
 
+  // const urls = [];
+
+  // const files = req.files;
+
+  // for (const file of files) {
+  //   const { path } = file;
+  //   const imgURL = await uploader(path);
+  //   urls.push(imgURL);
+
+  //   //   //DELETE THE THE FILE FROM THE FILE SYSTEM
+  //   fs.unlinkSync(path);
+  // }
+  // console.log(urls);
+  // product = await Product.findByIdAndUpdate(req.query.id, {
+  //   images: urls,
+  // });
+  if (!req.file) {
+    return res.status(400).json({
+      sucess: false,
+      message: "please upload an image",
+    });
+  }
+
   // CALL THE CLOUDINARY-UPLOAD FUNCTION AND PASS THE PATH OF THE FILE AND THE CORRESPONDING FOLDER IN THE CLOUDINARY SERVER
   const uploader = async (path) => await uploads(path, "egadgetsApp/products");
+  const { path } = req.file;
 
-  const urls = [];
+  const imgURL = await uploader(path);
 
-  const files = req.files;
-
-  for (const file of files) {
-    const { path } = file;
-    const imgURL = await uploader(path);
-    urls.push(imgURL);
-
-    //DELETE THE THE FILE FROM THE FILE SYSTEM
-    fs.unlinkSync(path);
+  if (!imgURL) {
+    return res.status(404).json({
+      success: false,
+      message: "Network error, image not uploaded",
+    });
   }
-  console.log(urls);
-  product = await Product.findByIdAndUpdate(req.query.id, {
-    images: urls,
-  });
+  fs.unlinkSync(path);
+  console.log(imgURL);
+  await product.images.push(imgURL);
 
-  res.status(200).json({ data: urls, product });
+  console.log(product.images);
+  await product.save();
+
+  res.status(200).json({
+    message: "success",
+    data: imgURL,
+    product,
+  });
 };
 
 export const updateProduct = async (req, res, next) => {

@@ -5,15 +5,9 @@ import onError from "@/backend/middlewares/errors";
 import { authorizeRole, isLoggedIN } from "@/backend/middlewares/auth";
 import multer from "multer";
 import { uploadProductImages } from "@/backend/controllers/productController";
+import { resizeProductPhoto } from "@/backend/middlewares/resizeImage";
 // import upload from "@/backend/utils/multer";
 const router = createRouter();
-
-dbConnect();
-
-const upload = multer({
-  dest: "public/images/products",
-  // limits: { fieldSize: 1024 * 1024 },
-});
 
 export const config = {
   api: {
@@ -21,10 +15,17 @@ export const config = {
   },
 };
 
-const uploadMiddleware = upload.array("image", 3);
+dbConnect();
+
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage,
+});
+
+const uploadMiddleware = upload.single("image");
 
 router
-  .use(isLoggedIN, uploadMiddleware, authorizeRole("admin"))
+  .use(isLoggedIN, authorizeRole("admin"), uploadMiddleware, resizeProductPhoto)
   .post(uploadProductImages);
 
 export default router.handler({ onError });

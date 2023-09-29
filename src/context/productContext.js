@@ -55,22 +55,23 @@ export const ProductProvider = ({ children }) => {
   };
 
   const uploadProductImages = async (formData, id) => {
-    console.log([...formData.entries()]);
-    setLoading(true);
-    const { data } = await axios.post(
-      `${process.env.URL}/api/admin/products/upload_images/${id}`,
-      formData
-      // {
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //   },
-      // }
-    );
-    if (data?.data) {
-      setLoading(false);
-      router.replace("/admin/products");
-    } else {
-      setError(response?.data?.message);
+    try {
+      setLoading(true);
+      const { data } = await axios.post(
+        `${process.env.URL}/api/admin/products/upload_images/${id}`,
+        formData
+        // {
+        //   headers: {
+        //     "Content-Type": "multipart/form-data",
+        //   },
+        // }
+      );
+      if (data?.data) {
+        setLoading(false);
+        router.replace("/admin/products");
+      }
+    } catch (error) {
+      setError(error.response?.data?.message);
     }
   };
 

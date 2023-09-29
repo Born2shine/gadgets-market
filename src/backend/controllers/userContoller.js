@@ -2,6 +2,7 @@ import User from "../models/userModel";
 import { uploads } from "../utils/cloudnary";
 import fs from "fs";
 import bcrypt from "bcryptjs";
+import path from "path";
 
 export const registerUser = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -23,29 +24,37 @@ export const updateUser = async (req, res, next) => {
     name: req.body.name,
     email: req.body.email,
   };
-  //CHECK IF THE USER EXISTS AND SEND A CORRESPONDING MESSAGE IF NOT FOUND
-  let updatedUser = await User.findById(req.user?.id);
+  // CHECK IF THE USER EXISTS AND SEND A CORRESPONDING MESSAGE IF NOT FOUND
+  let updatedUser = await User.findById(req.user?._id);
 
   if (!updatedUser) {
     return res.status(404).json({ message: "User not found" });
   }
 
-  //UPLOAD THE IMAGE TO CLOUDINARY ANAD DELETE THE IMAGE FROM THE FILE SYSTEM SUING THE FS MODULE
-  if (req.files.length > 0) {
+  // UPLOAD THE IMAGE TO CLOUDINARY ANAD DELETE THE IMAGE FROM THE FILE SYSTEM SUING THE FS MODULE
+  if (req.file) {
     const uploader = async (path) =>
       await uploads(path, "egadgetsApp/userPhotos");
 
-    const file = req.files[0];
+    const { path } = req.file;
 
-    const { path } = file;
+    // console.log(path.resolve(req.file));
+
+    console.log(path);
 
     const avatarResponse = await uploader(path);
 
     fs.unlinkSync(path);
+    if (!avatarResponse) {
+      return res.status(404).json({
+        success: false,
+        message: "Network error, image not uploaded",
+      });
+    }
     newUserData.avatar = avatarResponse;
   }
 
-  //UPDATE THE USER AND SEND RESPONSE TO THE FRONTEND
+  // UPDATE THE USER AND SEND RESPONSE TO THE FRONTEND
   updatedUser = await User.findByIdAndUpdate(req.user._id, newUserData);
 
   res.status(200).json({

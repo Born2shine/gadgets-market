@@ -4,12 +4,13 @@
 import ProductContext from "@/context/productContext";
 import Image from "next/image";
 import React, { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 
 const UploadImages = ({id}) => {
   const{loading, uploadProductImages, error, clearError} = useContext(ProductContext)
-  const [images, setImages]= useState([])
-  const [imagesPreview, setImagesPreview]= useState([])
+  const [images, setImages]= useState("")
+  const [imagesPreview, setImagesPreview]= useState("")
 
   useEffect(()=>{  
 
@@ -23,30 +24,23 @@ const UploadImages = ({id}) => {
 const submitHandler =(e)=>{
   e.preventDefault();
 
-  const formData = new FormData()
+  const formData = new FormData()  
+    formData.append('image', images)
 
-  images.forEach((image)=>{
-    formData.append('image', image)
-  })
-
-  uploadProductImages(formData, id) 
-
+    uploadProductImages(formData, id) 
 }
 
-  const onchange=(e)=>{
-    const files  = Array.from(e.target.files)  
-   setImages([])
-   setImagesPreview([])
+ 
 
-    files.forEach((file)=>{
-      const reader = new FileReader();
+
+
+  const onchange=(e)=>{
+    const reader = new FileReader();
       reader.onloadend=()=>{
-              setImagesPreview((oldArray)=>[...oldArray, reader.result])
+              setImagesPreview(reader.result)
             }
-          reader.readAsDataURL(file)
-        setImages((oldArray)=>[...oldArray, files])
-    })
-    
+          reader.readAsDataURL(e.target.files[0])
+        setImages(e.target.files[0])   
   
   } 
   return (
@@ -73,18 +67,14 @@ const submitHandler =(e)=>{
                   </div>
                 </div>
 
-                <div className="grid grid-cols-6 gap-2 my-5">
-                  {imagesPreview.map((img)=>(
+                <div className="grid grid-cols-6 gap-2 my-5">                
                     <Image
-                      src={img}
-                      key={img}
+                      src={imagesPreview}                     
                       alt="Preview"
                       className="col-span-1 object-contain shadow rounded border-2 border-gray p-2 h-full w-full"
                       width="50"
                       height="50"
-                    />
-
-                  ))}
+                    />                 
                 </div>
 
                 <button
