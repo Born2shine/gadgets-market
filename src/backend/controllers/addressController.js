@@ -2,6 +2,9 @@ import Address from "../models/addressModel";
 
 export const newAddress = async (req, res) => {
   const { newAddress } = req.body;
+  if (!newAddress) {
+    return res.status(404).json({ message: "please fill all required fields" });
+  }
   newAddress.user = req.user._id;
 
   const address = await Address.create(newAddress);

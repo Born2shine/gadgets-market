@@ -1,16 +1,18 @@
 'use client'
 import Link from 'next/link'
 import { useState } from 'react';
-import AuthContext from "@/context/authContext";
 import { toast } from "react-toastify";
 import {signIn} from 'next-auth/react'
 import{useRouter, useSearchParams} from 'next/navigation'
-import {parseCallbackUrl} from "@/helpers/helpers"
+import {ColorRing} from 'react-loader-spinner'
+
 
 
 const Login = () => {
+
 const[email, setEmail] = useState('')
 const[password, setPassword] = useState('')
+const[loading, setLoading] = useState(null)
 
 const router = useRouter();
 
@@ -24,7 +26,7 @@ const callBackUrl = params.get('callbackUrl');
   
   const submitHandler = async(e)=>{
       e.preventDefault();
-
+      setLoading(true)
     const data= await signIn('credentials', {
       email,
       password,
@@ -34,10 +36,12 @@ const callBackUrl = params.get('callbackUrl');
     })
    
     if (data?.error){
+      setLoading(false)
         toast.error(data?.error)
     }
 
-    if(data?.ok){      
+    if(data?.ok){ 
+      setLoading(false)     
       toast.success('LOGIN SUCCESFUL!')
       router.push('/')
     }      
@@ -79,9 +83,19 @@ const callBackUrl = params.get('callbackUrl');
 
         <button
           type="submit"
-          className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"  
+          className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 "
         >
-          Login
+         {loading? (<span className="flex justify-center items-center gap-2"><span>logging In</span>                   
+                   <ColorRing
+                      visible={true}
+                      height="30"
+                      width="30"
+                      ariaLabel="blocks-loading"
+                      wrapperStyle={{}}
+                      wrapperClass="blocks-wrapper"
+                      colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+                      className="hidden"/>
+                   </span>): "Login"} 
         </button>
 
         <hr className="mt-4" />

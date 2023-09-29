@@ -42,7 +42,7 @@ export const CartProvider = ({ children }) => {
     };
 
     const isItemExist = cart?.cartItems?.find(
-      (i) => i.product === item.product
+      (i) => i.product === item?.product
     );
 
     let newCartItems;

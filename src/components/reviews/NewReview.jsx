@@ -6,13 +6,14 @@ import { getUserReview } from "@/helpers/helpers";
 import React, { useContext, useEffect, useState } from "react";
 import StarRatings from "react-star-ratings";
 import { toast } from "react-toastify";
+import{Comment} from 'react-loader-spinner';
 
 const NewReview = ({product}) => {
   const[rating, setRating]= useState(0)
   const[comment, setComment]= useState("")
 
   const {user} = useContext(AuthContext)
-  const{error, clearError, postProductReview} = useContext(ProductContext)
+  const{error, clearError, loading, postProductReview} = useContext(ProductContext)
   const submitHandler =()=>{
     const reviewData = {
       rating,
@@ -69,7 +70,19 @@ const NewReview = ({product}) => {
       </div>
 
       <button className="mt-3 mb-5 px-4 py-2 text-center inline-block text-white bg-gradient-to-br from-blue-100 via-green-300 to-blue-400 border border-transparent rounded-md hover:bg-yellow-600 hover:shadow-xl w-1/3" onClick={()=>submitHandler()}>
-        Post Review
+        {loading?
+         (<Comment
+          visible={true}
+          height="80"
+          width="80"
+          ariaLabel="comment-loading"
+          wrapperStyle={{}}
+          wrapperClass="comment-wrapper"
+          color="#fff"
+          backgroundColor="#F4442E"
+        />): "Post Review"}
+        
+        
       </button>
     </div>
   );

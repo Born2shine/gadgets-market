@@ -19,6 +19,10 @@ dbConnect();
 //   },
 // };
 
+export const api = {
+  externalResolver: true,
+};
+
 router.use(isLoggedIN).post(newAddress);
 router.use(isLoggedIN).get(getAllAddress);
 router.delete(deleteAllAddress);

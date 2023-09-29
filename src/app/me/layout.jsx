@@ -4,7 +4,7 @@ import Sidebar from "@/components/layout/Sidebar";
 export default function UserLayout({children}){
     return(
         <>
-        <section className="py-5 sm:py-5 bg-blue-100">
+        <section className="py-2 sm:py-2 bg-gradient-to-br from-blue-100 via-green-200 to-blue-400">
         <div className="container max-w-screen-xl mx-auto px-4">
             <h1 className="text-bold text-2xl">User Dashboard</h1>
         </div>

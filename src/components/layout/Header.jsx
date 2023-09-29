@@ -67,7 +67,7 @@ useEffect(()=>{
                 <div className="space-y-1 font-medium">
                   <p>
                    {user?.name}
-                    <time className="block text-sm text-gray-500 dark:text-gray-400">
+                    <time className="hidden md:block text-sm text-gray-500 dark:text-gray-400">
                       {user.email}
                     </time>
                   </p>

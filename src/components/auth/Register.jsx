@@ -5,9 +5,9 @@ import  Link  from "next/link";
 import { useContext, useState, useEffect } from "react";
 import AuthContext from "@/context/authContext";
 import { toast } from "react-toastify";
-
+import {ColorRing} from 'react-loader-spinner'
 const Register = () => {
-  const {error, registerUser, clearError} =  useContext(AuthContext)
+  const {error, registerUser, loading, clearError} =  useContext(AuthContext)
 
   const[name, setName] = useState('')
   const[email, setEmail] = useState('')
@@ -75,7 +75,17 @@ const Register = () => {
           type="submit"
           className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700" onClick={submitHandler}
         >
-          Register
+           {loading? (<span className="flex justify-center items-center gap-2"><span>Submitting</span>                   
+                   <ColorRing
+                      visible={true}
+                      height="30"
+                      width="30"
+                      ariaLabel="blocks-loading"
+                      wrapperStyle={{}}
+                      wrapperClass="blocks-wrapper"
+                      colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+                      className="hidden"/>
+                   </span>): "Register"}
         </button>
 
         <hr className="mt-4" />

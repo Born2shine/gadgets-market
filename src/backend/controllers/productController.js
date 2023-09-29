@@ -138,6 +138,12 @@ export const deleteProduct = async (req, res, next) => {
 export const createProductReview = async (req, res, next) => {
   // GET THE REVIEWS FROM THE REQ.BODY OBJECT
   const { rating, comment, productId } = req.body;
+  if (!rating && !comment) {
+    return res.status(400).json({
+      message: "please add a rating or comment",
+    });
+  }
+
   const review = {
     user: req.user?._id,
     rating: Number(rating),

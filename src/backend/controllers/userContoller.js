@@ -65,12 +65,13 @@ export const updateUser = async (req, res, next) => {
 
 export const updatePassword = async (req, res, next) => {
   //CHECK IF THE USER EXISTS AND SEND A CORRESPONDING MESSAGE IF NOT FOUND
+
   const user = await User.findById(req.user._id).select("+password");
 
   if (!user) {
-    return res
-      .status(400)
-      .json({ message: "please login again to perform this action" });
+    return res.status(400).json({
+      message: "session expired, please login again to perform this action",
+    });
   }
 
   //COMPARE THE INPUTTED PASSWORD AND THE DATABASE PASSWORD USING THE BCRYPT PACKAGE, IF THEY DONT MATCH SEND A CORRESPONDING MESSGAE

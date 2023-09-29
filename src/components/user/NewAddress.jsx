@@ -7,10 +7,11 @@ import AuthContext from "@/context/authContext";
 import Sidebar from "../layout/Sidebar";
 import { useState, useContext, useEffect } from "react";
 import { toast } from "react-toastify";
+import {ColorRing} from 'react-loader-spinner'
 
 const NewAddress = ({cookiesToken}) => {
-  const {addNewAddress, error} = useContext(AuthContext)
-  const countriesList =Object.values(countries)
+  const {addNewAddress, loading, error} = useContext(AuthContext)
+  const countriesList = Object.values(countries)
   
 
   const [street, setStreet] = useState('')
@@ -26,7 +27,7 @@ const NewAddress = ({cookiesToken}) => {
     street, zipCode, country, state, city, phoneNo
   }
   addNewAddress(newAddress, cookiesToken)
-  // console.log(newAddress)
+  
   }
 
   useEffect(()=>{
@@ -63,8 +64,9 @@ const NewAddress = ({cookiesToken}) => {
                       className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
                       type="text"
                       placeholder="Type your address"
-                      value={street}
+                      value={street}                      
                       onChange={(e)=>setStreet(e.target.value)}
+                      required
                     />
                   </div>
 
@@ -77,6 +79,7 @@ const NewAddress = ({cookiesToken}) => {
                         placeholder="Type your city"
                         value={city}
                         onChange={(e)=>setCity(e.target.value)}
+                        required
                       />
                     </div>
 
@@ -88,6 +91,7 @@ const NewAddress = ({cookiesToken}) => {
                         placeholder="Type state here"
                         value={state}
                         onChange={(e)=>setState(e.target.value)}
+                        required
                       />
                     </div>
                   </div>
@@ -101,6 +105,7 @@ const NewAddress = ({cookiesToken}) => {
                         placeholder="Type zip code here"
                         value={zipCode}
                         onChange={(e)=>setZipCode(e.target.value)}
+                        required
                       />
                     </div>
 
@@ -112,6 +117,7 @@ const NewAddress = ({cookiesToken}) => {
                         placeholder="Type phone no here"
                         value={phoneNo}
                         onChange={(e)=>setPhoneNo(e.target.value)}
+                        required
                       />
                     </div>
                   </div>
@@ -119,7 +125,7 @@ const NewAddress = ({cookiesToken}) => {
                   <div className="mb-4 md:col-span-2">
                     <label className="block mb-1"> Country </label>
                     <select className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"  value={country}
-                       onChange={(e)=>setCountry(e.target.value)}>
+                       onChange={(e)=>setCountry(e.target.value)} required>
                       {countriesList.map((country) => (
                         <option key={country.name} value={country.name} 
                        >
@@ -130,9 +136,18 @@ const NewAddress = ({cookiesToken}) => {
                   </div>
                   <button
                     type="submit"
-                    className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
+                    className="my-2 px-4 py-2 flex items-center justify-center w-full  text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
                   >
-                    Add
+                    {loading? <ColorRing
+                              visible={true}
+                              height="40"
+                              width="40"
+                              ariaLabel="blocks-loading"
+                              wrapperStyle={{}}
+                              wrapperClass="blocks-wrapper"
+                              colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}/> : " Add"
+                      }
+                   
                   </button>
                  
                 </form>

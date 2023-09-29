@@ -2,9 +2,7 @@
 
 import { createContext, useState } from "react";
 import { useRouter } from "next/navigation";
-
 import axios from "axios";
-import { toast } from "react-toastify";
 
 const ProductContext = createContext();
 
@@ -55,8 +53,8 @@ export const ProductProvider = ({ children }) => {
   };
 
   const uploadProductImages = async (formData, id) => {
+    setLoading(true);
     try {
-      setLoading(true);
       const { data } = await axios.post(
         `${process.env.URL}/api/admin/products/upload_images/${id}`,
         formData
@@ -76,17 +74,19 @@ export const ProductProvider = ({ children }) => {
   };
 
   const postProductReview = async (reviewData) => {
+    setLoading(true);
     try {
       const { data } = await axios.put(
         `${process.env.URL}/api/products/review`,
         reviewData
       );
       if (data?.success) {
+        setLoading(false);
         router.replace(`/product/${reviewData?.productId}`);
       }
     } catch (error) {
       setError(error.response?.data?.message);
-      console.log(error);
+      setLoading(false);
     }
   };
 
