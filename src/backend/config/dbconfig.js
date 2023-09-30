@@ -5,7 +5,7 @@ const dbConnect = () => {
     return;
   }
 
-  mongoose.connect(process.env.DB_URL_LOCAL);
+  mongoose.connect(process.env.DB_URL_CLOUD);
 };
 
 export default dbConnect;

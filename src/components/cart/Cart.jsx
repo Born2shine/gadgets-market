@@ -2,7 +2,8 @@
 import React from "react";
 import Link from "next/link";
 import CartContext from "@/context/cardContext"
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import {ColorRing} from 'react-loader-spinner'
 
 
   
@@ -10,6 +11,7 @@ import { useContext } from "react";
 
 const Cart = () => {
   const {addItemToCart, deleteCartItem, cart, saveOnCheckout} = useContext(CartContext)
+  const[loading, setLoading] = useState(false)
 
   const increaseQty = (cartItem)=>{
     const newQty = cartItem.quantity + 1; 
@@ -42,16 +44,17 @@ const checkoutHandler = ()=>{
     totalAmount,
   }
 
+setLoading(true)
   saveOnCheckout(data)
 }
   return (
     <>
-      <section className="py-5 sm:py-7 bg-blue-100">
+      <section className="py-5 sm:py-7  bg-gradient-to-br from-blue-100 via-green-200 to-blue-400">
         <div className="container max-w-screen-xl mx-auto px-4">
           <h2 className="text-3xl font-semibold mb-2">{cart?.cartItems?.length || 0} Item(s) in Cart</h2>
         </div>
       </section>
-      {cart?.cartItems?.length > 0 && (
+      {cart?.cartItems?.length > 0 ? (
       <section className="py-10">
         <div className="container max-w-screen-xl mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-4">
@@ -147,7 +150,17 @@ const checkoutHandler = ()=>{
                 </ul>
 
                 <a className="px-4 py-3 mb-2 inline-block text-lg w-full text-center font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 cursor-pointer" onClick={checkoutHandler}>
-                  Continue
+                {loading? (<span className="flex justify-center items-center gap-2"><span>Redirecting...</span>                   
+                   <ColorRing
+                      visible={true}
+                      height="30"
+                      width="30"
+                      ariaLabel="blocks-loading"
+                      wrapperStyle={{}}
+                      wrapperClass="blocks-wrapper"
+                      colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+                      className="hidden"/>
+                   </span>): "Continue"}
                 </a>
 
                 <Link
@@ -161,6 +174,8 @@ const checkoutHandler = ()=>{
           </div>
         </div>
       </section>
+      ) : (
+        <div className="h-64 flex items-center justify-center"><span className="bg-green-500 text-white text-xl py-2 px-2 md:py-5 rounded-md text-center"> No Items in Cart </span> </div>
       )}
     </>
   );

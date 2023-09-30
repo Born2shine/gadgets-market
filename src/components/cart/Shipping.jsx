@@ -8,10 +8,14 @@ import CartContext from "@/context/cardContext";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
+import {ColorRing} from 'react-loader-spinner'
+import { FaAddressBook } from "react-icons/fa6";
+
 
 const Shipping = ({addresses}) => {
 
   const [shippingInfo, setShippingInfo] = useState('')
+  const[loading, setLoading] = useState(false)
  
   const {cart } = useContext(CartContext)
 
@@ -20,7 +24,9 @@ const Shipping = ({addresses}) => {
   }
 
   const checkoutHandler = async ()=>{
+    setLoading(true)
     if(!shippingInfo){
+      setLoading(false)
       return toast.error('please select your shipping address')
     }
 
@@ -30,12 +36,13 @@ const Shipping = ({addresses}) => {
         shippingInfo
       }) 
 
-      console.log(data)
+
+      setLoading(false)      
 
       window.location.href = data.url
 
     }catch(err){
-      console.log(err.response)
+      toast.error(err.response)
     }
 
   }
@@ -81,9 +88,9 @@ const Shipping = ({addresses}) => {
 
                 <Link
                   href="/address/new"
-                  className="px-4 py-2 inline-block text-blue-600 border border-gray-300 rounded-md hover:bg-gray-100"
+                  className="px-4 py-2 inline-block text-blue-600 border border-gray-300 rounded-md hover:bg-gray-100 flex items-center gap-2"
                 >
-                  <i className="mr-1 fa fa-plus"></i> Add new address
+                 <FaAddressBook/> Add new address
                 </Link>
 
                 <div className="flex justify-end space-x-2 mt-10">
@@ -95,7 +102,17 @@ const Shipping = ({addresses}) => {
                   </Link>
                   <a className="px-5 py-2 inline-block text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 cursor-pointer"  onClick={checkoutHandler} >  
                   {/* */}
-                    Checkout
+                  {loading? (<span className="flex justify-center items-center gap-2"><span>Redirecting...</span>                   
+                   <ColorRing
+                      visible={true}
+                      height="30"
+                      width="30"
+                      ariaLabel="blocks-loading"
+                      wrapperStyle={{}}
+                      wrapperClass="blocks-wrapper"
+                      colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+                      className="hidden"/>
+                   </span>): "Checkout"}
                   </a>
                 </div>
               </article>

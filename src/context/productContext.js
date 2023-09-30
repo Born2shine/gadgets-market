@@ -14,15 +14,18 @@ export const ProductProvider = ({ children }) => {
   const router = useRouter();
 
   const newProduct = async (product) => {
+    setLoading(true)
     try {
       const { data } = await axios.post(
         `${process.env.URL}/api/admin/products`,
         product
       );
       if (data) {
+        setLoading(false)
         router.replace("/admin/products");
       }
     } catch (error) {
+      setLoading(false)
       setError(error.response?.data?.message);
     }
   };

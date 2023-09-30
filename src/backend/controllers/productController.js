@@ -40,7 +40,7 @@ export const getProduct = async (req, res, next) => {
 };
 
 export const uploadProductImages = async (req, res, next) => {
-  console.log(req.file);
+
   // CHECK IF THE PRODUCT EXISTS AND SEND A CORRESPONDING MESSAGE IF NOT FOUND
   let product = await Product.findById(req.query.id);
 
@@ -86,10 +86,10 @@ export const uploadProductImages = async (req, res, next) => {
     });
   }
   fs.unlinkSync(path);
-  console.log(imgURL);
+ 
   await product.images.push(imgURL);
 
-  console.log(product.images);
+ 
   await product.save();
 
   res.status(200).json({

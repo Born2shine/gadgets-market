@@ -19,14 +19,14 @@ const Footer = () => {
         </button>}
         
       </div>
-      <div className="md:flex justify-around items-center m-5">
+      <div className="md:flex justify-around items-center py-5">
         <div className="footer-info sm:flex justify-center items-center gap-2 text-sm md:text-lg cursor-pointer">
           <div className="hover:scale-110 hover:text-lg md:hover:text-xl hover:mr-2 transition-all duration-300 ease-in-out">Contact Us</div>
           <div className="hover:scale-110 hover:text-lg md:hover:text-xl hover:mr-2 transition-all duration-300 ease-in-out">Terms and Conditions</div>
           <div className="hover:scale-110 hover:text-lg md:hover:text-xl hover:mr-2 transition-all duration-300 ease-in-out">Privacy</div>
         </div>
         <div className="copyright">
-          &#174;copyright 2023 built and design by DrsoadJS
+          <span className="text-xs">&copy; copyright 2023 built and design by</span> <span className="text-pink-900 underline">DrsoadJS</span> 
         </div>
 
       </div>

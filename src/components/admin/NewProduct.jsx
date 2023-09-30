@@ -2,11 +2,12 @@
 
 import ProductContext from "@/context/productContext";
 import React, { useContext, useState } from "react";
+import {ColorRing} from 'react-loader-spinner'
 
 
 const NewProduct = () => {
 
-  const {newProduct}  = useContext(ProductContext)
+  const {newProduct, loading}  = useContext(ProductContext)
 
 const [product, setProduct] = useState({
   name:"",
@@ -157,7 +158,17 @@ newProduct(product)
                   type="submit"
                   className="my-2 px-4 py-2 text-center inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 w-full"
                 >
-                  Create Product
+                  {loading? (<span className="flex justify-center items-center gap-2"><span>Uploading...</span>                   
+                   <ColorRing
+                      visible={true}
+                      height="30"
+                      width="30"
+                      ariaLabel="blocks-loading"
+                      wrapperStyle={{}}
+                      wrapperClass="blocks-wrapper"
+                      colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+                      className="hidden"/>
+                   </span>): "Create Product"}
                 </button>
               </form>
             </section>
