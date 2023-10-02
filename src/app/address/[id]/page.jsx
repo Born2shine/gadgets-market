@@ -22,6 +22,11 @@ const getAddress= async(id)=>{
 
 
 const UpdateAddressPage = async({params}) => {  
+    const isValidId = mongoose.isValidObjectId(params?.id)
+
+    if(!isValidId){
+        return redirect('/')
+    }
     const address = await getAddress(params?.id)
     return  <UpdateAddress id={params.id} address={address}/> ;
 }

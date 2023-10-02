@@ -10,6 +10,11 @@ const getProduct = async(id)=>{
 } 
 
 const HomePage = async ({params}) => {
+    const isValidId = mongoose.isValidObjectId(params?.id)
+
+    if(!isValidId){
+        return redirect('/')
+    }
     const data = await getProduct(params.id)
     
     return ( 

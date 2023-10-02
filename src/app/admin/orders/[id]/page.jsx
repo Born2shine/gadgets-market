@@ -22,8 +22,17 @@ const getOrder= async(id)=>{
 
 
 
-const AdminOrderDetailsPage = async({params}) => {  
+const AdminOrderDetailsPage = async({params}) => { 
+     
+    const isValidId = mongoose.isValidObjectId(params?.id)
+
+    if(!isValidId){
+        return redirect('/')
+    }
+
     const data = await getOrder(params?.id)
+
+  
    
     
     return  <UpdateOrder order={data?.order}/> ;

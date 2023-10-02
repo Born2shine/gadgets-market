@@ -22,6 +22,11 @@ const getUser= async(id)=>{
 
 
 const AdminUserDetailsPage = async({params}) => {  
+    const isValidId = mongoose.isValidObjectId(params?.id)
+
+    if(!isValidId){
+        return redirect('/')
+    }
     const data = await getUser(params?.id)
    
     
