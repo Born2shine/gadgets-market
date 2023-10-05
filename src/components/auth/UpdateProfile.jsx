@@ -37,7 +37,7 @@ useEffect(()=>{
     toast.error(error)
     clearError()
   }
-  }, [user, error])
+  }, [user, error, clearError])
 
 
 const submitHandler =(e)=>{

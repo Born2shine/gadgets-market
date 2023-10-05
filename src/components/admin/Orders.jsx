@@ -23,7 +23,7 @@ const Orders = ({orders}) => {
       toast.error(error);
       clearError();
     }
-  }, [error]);
+  }, [error, clearError]);
   
 
   return (

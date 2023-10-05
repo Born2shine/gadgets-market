@@ -18,7 +18,7 @@ const UploadImages = ({id}) => {
     toast.error(error)
     clearError()
   }
-  }, [error])
+  }, [error, clearError])
 
 
 const submitHandler =(e)=>{

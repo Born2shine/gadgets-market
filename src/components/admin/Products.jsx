@@ -16,7 +16,7 @@ const Products = ({data}) => {
       toast.error(error);
       clearError();
     }
-  }, [error]);
+  }, [error, clearError]);
 
   const deleteHandler= (id)=>{
     deleteProduct(id)

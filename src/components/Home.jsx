@@ -81,7 +81,7 @@ const Home = () => {
     <div className="text-center">
       <h1 className="text-3xl my-10 font-bold">Components List</h1>
       {paths?.map((path) => (
-        <Link to={path.url}>
+        <Link to={path.url} key={path}>
           <p className="text-xl">{path.name}</p>
         </Link>
       ))}

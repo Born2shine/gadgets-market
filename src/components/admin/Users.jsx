@@ -22,7 +22,7 @@ const Users = ({users}) => {
       toast.error(error);
       clearError();
     }
-  }, [error]);
+  }, [error, clearError]);
 
 
   return (

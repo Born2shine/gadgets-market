@@ -21,7 +21,7 @@ useEffect(() => {
     toast.error(error);
     clearError();
   }
-}, [error, updated]);
+}, [error, updated, clearError, setUpdated]);
 
 
 const submitHandler = () => {
