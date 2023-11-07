@@ -29,3 +29,17 @@ export const getUserReview = (reviews, userId) => {
 
   return userReview;
 };
+
+export const getCookieName = () => {
+  let cookieName = "";
+
+  if (process.env.NODE_ENV === "development") {
+    let cookieName = "next-auth.session-token";
+  }
+
+  if (process.env.NODE_ENV === "production") {
+    let cookieName = "__Secure-next-auth.session-token";
+  }
+
+  return cookieName;
+};

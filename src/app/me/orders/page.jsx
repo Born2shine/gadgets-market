@@ -1,5 +1,6 @@
 
 import ListOrders from "@/components/order/ListOrders";
+import { getCookieName } from "@/helpers/helpers";
 import axios from "axios";
 import {cookies} from 'next/headers'
 import queryString from "query-string";
@@ -14,11 +15,15 @@ const getAllOrders= async(searchParams)=>{
 
     const queryStr = queryString.stringify(urlParams)
 
-    const nextAuthSessionToken = nextCookies.get('next-auth.session-token')
+    
 
-    const { data } = await axios(`${process.env.URL}/api/orders/me?${queryStr}`, {
+    const cookieName = getCookieName()
+
+    const nextAuthSessionToken = nextCookies.get(cookieName)
+
+    const { data } = await axios(`${process.env.URL}/api/address`, {
         headers: {
-            Cookie: `next-auth.session-token=${nextAuthSessionToken?.value}`
+            Cookie: `${nextAuthSessionToken?.name}=${nextAuthSessionToken?.value}`
         }
     });
 

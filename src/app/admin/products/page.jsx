@@ -3,6 +3,7 @@ import axios from "axios";
 import queryString from "query-string";
 import {cookies} from 'next/headers'
 import Products from "@/components/admin/Products";
+import { getCookieName } from "@/helpers/helpers";
 
 const getAllProducts = async(searchParams)=>{
 const urlParams= {
@@ -19,14 +20,15 @@ const searchQuery = queryString.stringify(urlParams)
 
 const nextCookies = cookies();
 
-    const nextAuthSessionToken = nextCookies.get('next-auth.session-token')
+const cookieName = getCookieName()
 
+const nextAuthSessionToken = nextCookies.get(cookieName)
 
-    const {data} = await axios.get(`${process.env.URL}/api/products?${searchQuery}`, {
-        headers: {
-            Cookie: `next-auth.session-token=${nextAuthSessionToken?.value}`
-        }
-    })
+const { data } = await axios(`${process.env.URL}/api/address`, {
+    headers: {
+        Cookie: `${nextAuthSessionToken?.name}=${nextAuthSessionToken?.value}`
+    }
+});
     return data
 } 
 
