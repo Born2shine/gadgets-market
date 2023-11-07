@@ -1,5 +1,6 @@
 
 import Profile from "@/components/auth/Profile";
+import { getCookieName } from "@/helpers/helpers";
 import axios from "axios";
 import {cookies} from 'next/headers'
 

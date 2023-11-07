@@ -1,6 +1,7 @@
 
 
 import Shipping from "@/components/cart/Shipping";
+import { getCookieName } from "@/helpers/helpers";
 import axios from "axios";
 import {cookies} from 'next/headers'
 
